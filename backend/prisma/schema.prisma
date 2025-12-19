@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum MatchStatus {
+  scheduled
+  live
+  finished
+}
+
+
+
+model Admin {
+  id       String @id @default(cuid())
+  userName String @unique
+  password String
+}
+
+model Team {
+  id   String @id @default(cuid())
+  name String @unique
+
+
+  matchesAsTeam1 Match[] @relation("Team1")
+  matchesAsTeam2 Match[] @relation("Team2")
+}
+
+model Match {
+  id String @id @default(cuid())
+
+  team1Id String
+  team2Id String
+
+  team1 Team @relation("Team1", fields: [team1Id], references: [id], onDelete: Restrict)
+  team2 Team @relation("Team2", fields: [team2Id], references: [id], onDelete: Restrict)
+
+  status MatchStatus @default(scheduled)
+  startTime DateTime
+  endTime   DateTime?
+
+  firstTeamScore  Int?
+  secondTeamScore Int?
+
+  @@index([startTime])
+  @@index([team1Id])
+  @@index([team2Id])
+}
