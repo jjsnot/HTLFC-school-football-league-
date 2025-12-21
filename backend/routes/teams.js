@@ -11,6 +11,7 @@ router.get('/', async (_req, res) => {
     const teams = await db.team.findMany({orderBy: {name:"asc"}});
     res.json(teams);
 })
+//POST /api/teams
 router.post('/', async (req, res) => {
     const name = String(req.body?.name ?? "").trim().toUpperCase();
     const scoreRaw = req.body?.score;
@@ -26,6 +27,24 @@ router.post('/', async (req, res) => {
         }
         console.error(err);
         return res.status(500).json({ error: "Server error" });
+    }
+})
+//PUT  /api/teams/by-name/:name/score
+router.put("/by-name/:name/score", async (req, res) => {
+    const name = String(req.params.name).trim().toUpperCase();
+    const score = req.body?.score;
+    if(!name) return res.status(400).json({error: "Name is required"});
+    if(!Number.isInteger(score)) {
+        res.status(400).json({error: "Score must be an integer >=0"});
+    }
+    try{
+        const updated = await db.team.update({
+            where: {name},
+            data: {score}
+        })
+        return res.status(201).json(updated)
+    }catch(err){
+        console.error(err);
     }
 })
 export default router;

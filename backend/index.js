@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import teams from "./routes/teams.js";
-
+import match from "./routes/match.js";
 
 
 const app = express();
@@ -14,4 +14,5 @@ app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
 
 app.use("/api/teams" ,teams )
+app.use("/api/match", match )
 app.listen(3000, () => console.log("API: http://localhost:3000"));
