@@ -14,6 +14,118 @@ function shuffle(arr) {
 router.get('/', async (req_, res) => {
     res.json(await db.match.findMany({orderBy: {id:"asc"}}));
 })
+async function check_team_id(team_id) {
+    const team = await db.team.findUnique({where: {id: team_id}});
+    return !!team;
+}
+//POST /api/match
+router.post('/', async (req, res) => {
+    const toInt = (v) => {
+        if (v === undefined || v === null || v === "") return null;
+        const n = Number.parseInt(String(v), 10);
+        return Number.isInteger(n) ? n : null;
+    };
+
+    const toDateOrNull = (v) => {
+        if (v === undefined || v === null || v === "") return null;
+        const d = new Date(v);
+        return Number.isNaN(d.getTime()) ? null : d;
+    };
+    const round = toInt(req.body?.round) ?? 1;
+
+    const team1Id = toInt(req.body?.team1Id);
+    const team2Id = toInt(req.body?.team2Id);
+
+    const statusRaw = String(req.body?.status ?? "scheduled").toLowerCase();
+    const allowedStatus = new Set(["scheduled", "live", "finished"]);
+    const status = allowedStatus.has(statusRaw) ? statusRaw : null;
+
+    const startTime = toDateOrNull(req.body?.startTime);
+    const endTime = toDateOrNull(req.body?.endTime);
+
+
+    const firstTeamScore = req.body?.firstTeamScore === undefined ? null : toInt(req.body?.firstTeamScore);
+    const secondTeamScore = req.body?.secondTeamScore === undefined ? null : toInt(req.body?.secondTeamScore);
+
+    if (!Number.isInteger(round) || round < 1) {
+        return res.status(400).json({ error: "round must be integer >= 1" });
+    }
+
+    if (team1Id === null || team2Id === null) {
+        return res.status(400).json({ error: "team1Id and team2Id are required integers" });
+    }
+
+    if (team1Id === team2Id) {
+        return res.status(400).json({ error: "team1Id and team2Id must be different" });
+    }
+
+    if (!status) {
+        return res.status(400).json({ error: "status must be one of: scheduled, live, finished" });
+    }
+
+
+    if (endTime && !startTime) {
+        return res.status(400).json({ error: "startTime is required if endTime is provided" });
+    }
+
+
+    if (startTime && endTime && endTime < startTime) {
+        return res.status(400).json({ error: "endTime cannot be earlier than startTime" });
+    }
+
+
+    if (firstTeamScore !== null && (firstTeamScore < 0)) {
+        return res.status(400).json({ error: "firstTeamScore must be >= 0" });
+    }
+    if (secondTeamScore !== null && (secondTeamScore < 0)) {
+        return res.status(400).json({ error: "secondTeamScore must be >= 0" });
+    }
+
+
+    if (status === "finished") {
+        if (firstTeamScore === null || secondTeamScore === null) {
+            return res.status(400).json({ error: "Scores are required when status is finished" });
+        }
+    }
+    if(check_team_id(team1Id) || check_team_id(team2Id)) {
+        return res.status(400).json({ error: "One or both teams not found" });
+    }
+
+    const dublicate = await db.match.findFirst({
+        where:
+            {round ,
+            OR: [
+                {team1Id:team1Id, team2Id:team2Id },
+                {team1Id:team2Id, team2Id:team2Id },
+            ]}
+    });
+    if(dublicate){
+        return res.status(400).json({ error: "This match already exists in this round" });
+    }
+
+    try {
+        const match = await db.match.create({
+            data: {
+                round,
+                team1Id,
+                team2Id,
+                status,
+                startTime,
+                endTime,
+                firstTeamScore,
+                secondTeamScore,
+            },
+        });
+        return res.status(201).json(match);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({error: "Server error"});
+    }
+
+
+
+})
+//POST /api/match/create_round
 router.post('/create_round', async (req, res) => {
 let teams = await db.team.findMany({orderBy: {name:"asc"}});
 const round = Number.parseInt(req.body?.round ?? 1, 10);
@@ -49,10 +161,107 @@ if(round === 1){
    }catch(err){
        return res.status(400).json({error: "Error creating round!"});
    }
+}else {
+    return res.status(400).json({error: "Invalid round number!"});
 }
 
 
 })
+// PATCH /api/matches/:id
+router.patch("/:id", async (req, res) => {
+    const id = Number.parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) {
+        return res.status(400).json({ error: "Invalid match id" });
+    }
+
+    const allowedStatus = new Set(["scheduled", "live", "finished"]);
+
+    const toIntOrNull = (v) => {
+        if (v === undefined) return undefined; // не присылали
+        if (v === null || v === "") return null; // явно очистить
+        const n = Number.parseInt(String(v), 10);
+        return Number.isInteger(n) ? n : NaN;
+    };
+
+    const toDateOrNull = (v) => {
+        if (v === undefined) return undefined; // не присылали
+        if (v === null || v === "") return null; // очистить
+        const d = new Date(v);
+        return Number.isNaN(d.getTime()) ? NaN : d;
+    };
+
+    const data = {};
+
+    // status
+    if (req.body?.status !== undefined) {
+        const s = String(req.body.status).toLowerCase();
+        if (!allowedStatus.has(s)) {
+            return res.status(400).json({ error: "status must be scheduled|live|finished" });
+        }
+        data.status = s;
+    }
+
+    // times
+    const startTime = toDateOrNull(req.body?.startTime);
+    if (startTime !== undefined) {
+        if (startTime !== null && Number.isNaN(startTime)) {
+            return res.status(400).json({ error: "startTime must be a valid date or null" });
+        }
+        data.startTime = startTime;
+    }
+
+    const endTime = toDateOrNull(req.body?.endTime);
+    if (endTime !== undefined) {
+        if (endTime !== null && Number.isNaN(endTime)) {
+            return res.status(400).json({ error: "endTime must be a valid date or null" });
+        }
+        data.endTime = endTime;
+    }
+
+    // scores
+    const s1 = toIntOrNull(req.body?.firstTeamScore);
+    if (s1 !== undefined) {
+        if (Number.isNaN(s1) || (s1 !== null && s1 < 0)) {
+            return res.status(400).json({ error: "firstTeamScore must be integer >= 0 or null" });
+        }
+        data.firstTeamScore = s1;
+    }
+
+    const s2 = toIntOrNull(req.body?.secondTeamScore);
+    if (s2 !== undefined) {
+        if (Number.isNaN(s2) || (s2 !== null && s2 < 0)) {
+            return res.status(400).json({ error: "secondTeamScore must be integer >= 0 or null" });
+        }
+        data.secondTeamScore = s2;
+    }
+
+    if (Object.keys(data).length === 0) {
+        return res.status(400).json({ error: "nothing to update" });
+    }
 
 
+    if (data.status === "finished") {
+        const willHaveS1 = data.firstTeamScore !== undefined ? data.firstTeamScore : undefined;
+        const willHaveS2 = data.secondTeamScore !== undefined ? data.secondTeamScore : undefined;
+
+
+        if (willHaveS1 === undefined || willHaveS2 === undefined) {
+            return res.status(400).json({
+                error: "When setting status=finished, send firstTeamScore and secondTeamScore in the same request",
+            });
+        }
+    }
+
+    try {
+        const updated = await db.match.update({
+            where: { id },
+            data,
+        });
+        return res.json(updated);
+    } catch (err) {
+        if (err?.code === "P2025") return res.status(404).json({ error: "match not found" });
+        console.error(err);
+        return res.status(500).json({ error: "Server error" });
+    }
+});
 export default router;
