@@ -14,10 +14,7 @@ function shuffle(arr) {
 router.get('/', async (req_, res) => {
     res.json(await db.match.findMany({orderBy: {id:"asc"}}));
 })
-async function check_team_id(team_id) {
-    const team = await db.team.findUnique({where: {id: team_id}});
-    return !!team;
-}
+
 //POST /api/match
 router.post('/', async (req, res) => {
     const toInt = (v) => {
@@ -87,8 +84,13 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: "Scores are required when status is finished" });
         }
     }
-    if(check_team_id(team1Id) || check_team_id(team2Id)) {
-        return res.status(400).json({ error: "One or both teams not found" });
+    const [t1, t2] = await Promise.all([
+        db.team.findUnique({ where: { id: team1Id } }),
+        db.team.findUnique({ where: { id: team2Id } }),
+    ]);
+
+    if (!t1 || !t2) {
+        return res.status(404).json({ error: "One or both teams not found" });
     }
 
     const dublicate = await db.match.findFirst({
@@ -167,7 +169,7 @@ if(round === 1){
 
 
 })
-// PATCH /api/matches/:id
+// PATCH /api/match/:id
 router.patch("/:id", async (req, res) => {
     const id = Number.parseInt(req.params.id, 10);
     if (!Number.isInteger(id)) {
@@ -177,15 +179,15 @@ router.patch("/:id", async (req, res) => {
     const allowedStatus = new Set(["scheduled", "live", "finished"]);
 
     const toIntOrNull = (v) => {
-        if (v === undefined) return undefined; // не присылали
-        if (v === null || v === "") return null; // явно очистить
+        if (v === undefined) return undefined;
+        if (v === null || v === "") return null;
         const n = Number.parseInt(String(v), 10);
         return Number.isInteger(n) ? n : NaN;
     };
 
     const toDateOrNull = (v) => {
-        if (v === undefined) return undefined; // не присылали
-        if (v === null || v === "") return null; // очистить
+        if (v === undefined) return undefined;
+        if (v === null || v === "") return null;
         const d = new Date(v);
         return Number.isNaN(d.getTime()) ? NaN : d;
     };
