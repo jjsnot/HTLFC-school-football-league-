@@ -2,6 +2,7 @@ import { Router} from 'express';
 import {db} from '../db.js';
 
 import prismaPkg from "@prisma/client";
+import {requireAdmin} from "../middleware/requireAdmin";
 const { Prisma } = prismaPkg;
 
 const router = Router();
@@ -11,12 +12,12 @@ function shuffle(arr) {
 }
 
 //GET /****api****/match
-router.get('/', async (req_, res) => {
+router.get('/', requireAdmin, async (req_, res) => {
     res.json(await db.match.findMany({orderBy: {id:"asc"}}));
 })
 
 //POST /api/match
-router.post('/', async (req, res) => {
+router.post('/',requireAdmin ,  async (req, res) => {
     const toInt = (v) => {
         if (v === undefined || v === null || v === "") return null;
         const n = Number.parseInt(String(v), 10);
@@ -128,7 +129,7 @@ router.post('/', async (req, res) => {
 
 })
 //POST /api/match/create_round
-router.post('/create_round', async (req, res) => {
+router.post('/create_round', requireAdmin , async (req, res) => {
 let teams = await db.team.findMany({orderBy: {name:"asc"}});
 const round = Number.parseInt(req.body?.round ?? 1, 10);
 if (teams.length < 2) {
@@ -170,7 +171,7 @@ if(round === 1){
 
 })
 // PATCH /api/match/:id
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", requireAdmin ,async (req, res) => {
     const id = Number.parseInt(req.params.id, 10);
     if (!Number.isInteger(id)) {
         return res.status(400).json({ error: "Invalid match id" });

@@ -2,17 +2,18 @@ import {Router} from 'express';
 import {db} from '../db.js';
 
 import prismaPkg from "@prisma/client";
+import {requireAdmin} from "../middleware/requireAdmin";
 const { Prisma } = prismaPkg;
 
 const router = Router();
 
 //GET /api/teams
-router.get('/', async (_req, res) => {
+router.get('/',requireAdmin , async (_req, res) => {
     const teams = await db.team.findMany({orderBy: {name:"asc"}});
     res.json(teams);
 })
 //POST /api/teams
-router.post('/', async (req, res) => {
+router.post('/',requireAdmin, async (req, res) => {
     const name = String(req.body?.name ?? "").trim().toUpperCase();
     const scoreRaw = req.body?.score;
     if(!name) return res.status(400).json({error: "Name is required"});
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
     }
 })
 //PUT  /api/teams/by-name/:name/score
-router.put("/by-name/:name/score", async (req, res) => {
+router.put("/by-name/:name/score", requireAdmin, async (req, res) => {
     const name = String(req.params.name).trim().toUpperCase();
     const score = req.body?.score;
     if(!name) return res.status(400).json({error: "Name is required"});
