@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {db} from '../db.js';
 
 import prismaPkg from "@prisma/client";
-import {requireAdmin} from "../middleware/requireAdmin";
+import {requireAdmin} from "../middleware/requireAdmin.js";
 const { Prisma } = prismaPkg;
 
 const router = Router();
@@ -37,6 +37,11 @@ router.put("/by-name/:name/score", requireAdmin, async (req, res) => {
     if(!name) return res.status(400).json({error: "Name is required"});
     if(!Number.isInteger(score)) {
         res.status(400).json({error: "Score must be an integer >=0"});
+    }
+    if(!await db.team.findUnique({
+        where: {name: name},
+    })){
+        return res.status(400).json({error: "Team does not exist"});
     }
     try{
         const updated = await db.team.update({

@@ -2,7 +2,7 @@ import { Router} from 'express';
 import {db} from '../db.js';
 
 import prismaPkg from "@prisma/client";
-import {requireAdmin} from "../middleware/requireAdmin";
+import {requireAdmin} from "../middleware/requireAdmin.js";
 const { Prisma } = prismaPkg;
 
 const router = Router();
