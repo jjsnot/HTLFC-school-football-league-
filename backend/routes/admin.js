@@ -23,10 +23,6 @@ const router = Router();
 router.post("/", async (req, res) => {
     const login = String(req.body?.login ?? "").trim();
     const password = String(req.body?.password ?? "");
-    console.log("ENV USERNAME =", JSON.stringify(process.env["username"]));
-    console.log("ENV PASSWORD =", JSON.stringify(process.env.password));
-    console.log("BODY login   =", JSON.stringify(login));
-    console.log("BODY password=", JSON.stringify(password));
     if(login ===process.env["username"] && password === process.env.password) {
         return res.json({token: signToken()});
     }else{
