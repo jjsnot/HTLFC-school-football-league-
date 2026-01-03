@@ -1,9 +1,14 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal} from '@angular/core';
 import { Team } from '../app/models/team.model';
 import {Auth} from '../app/core/auth/auth';
 import {Router} from '@angular/router';
 import {TeamsService} from '../app/services/teams';
+import {PopupService} from '../app/services/create-new-team-popup';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'app-teams',
   imports: [],
@@ -12,18 +17,19 @@ import {TeamsService} from '../app/services/teams';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Teams {
-  teams: Team[] = [];
-  constructor(public auth: Auth, private router: Router  , private TeamService: TeamsService , private cdr: ChangeDetectorRef) { }
+  private teamsService = inject(TeamsService);
+  teams = this.teamsService.teams;
+  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService , private cdr: ChangeDetectorRef) { }
+
+
 
 ngOnInit() {
-    this.TeamService.getTeams().subscribe({
-      next: (teams) => {this.teams = teams
-      console.log(teams || null)
-        this.cdr.markForCheck();}
-
-      ,
-      error: (err) => console.log(err),
-    })
+    this.TeamService.getTeams().subscribe()
 }
+  openPopup() {
+    this.popupService.openPopup();
+  }
+
+
 
 }

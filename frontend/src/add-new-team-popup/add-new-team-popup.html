@@ -1,0 +1,15 @@
+<div class="main">
+<h1 class="dialog-title">Add new team</h1>
+<div  class="dialog-content">
+  <label class="dialog-label">Team name: </label>
+  <input [(ngModel)]="team_name" type="text" class="dialog-input"> <br>
+  <label class="dialog-label">Score: </label>
+  <input [(ngModel)]="team_score" type="number" class="dialog-input">
+</div>
+<div class="dialog-actions">
+
+  <button (click)="createNewTeam()" class="dialog-btn" >Confirm</button>
+  <button  (click)="closeDialog()" class="dialog-btn" id="del-button">Close</button>
+</div>
+</div>
+
