@@ -1,0 +1,9 @@
+<button class="add-team-button">Add new Team</button><br>
+
+@for (team of teams; track $index){
+  <div class="team_element">
+    <p>{{team.name }} | {{team.score}}</p>
+      <button id="edit-button">Edit</button>
+      <button id="del-button">Delete</button>
+  </div>
+}

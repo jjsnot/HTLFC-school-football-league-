@@ -1,0 +1,19 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Убедись, что body и html тоже обнулены */
+:global(body),
+:global(html) {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
