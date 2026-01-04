@@ -1,6 +1,11 @@
 <div class="app-layout">
   <app-sidebar></app-sidebar>
   <div class="app-content">
-    <app-teams></app-teams>
+    @if (view.currentView() === 'teams') {
+      <app-teams></app-teams>
+    } @else {
+      <p>matches</p>
+    }
+
   </div>
 </div>

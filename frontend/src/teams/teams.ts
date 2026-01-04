@@ -25,7 +25,15 @@ export class Teams {
 
 
 ngOnInit() {
-    this.TeamService.getTeams().subscribe()
+    this.TeamService.getTeams().subscribe({
+      next: data => {},
+      error: error => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+      },
+
+    })
 }
   openPopup() {
     this.popupService.openPopup();

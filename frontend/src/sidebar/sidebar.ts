@@ -1,7 +1,8 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {AdminHome} from '../admin-home/admin-home';
 import {Auth} from '../app/core/auth/auth';
 import {Router} from '@angular/router';
+import {View} from '../app/services/view';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,17 +11,11 @@ import {Router} from '@angular/router';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
+  constructor(public auth: Auth, private router: Router , private AdminHome: AdminHome ) { }
+  view = inject(View)
 
-  constructor(public auth: Auth, private router: Router , private AdminHome: AdminHome) { }
-  currentView = signal<'teams' | 'matches'>('teams');
 
-  changeView(){
-    if(this.currentView() == 'teams'){
-      this.currentView.set('matches')
-    }else{
-      this.currentView.set('teams')
-    }
-}
+
 
 
 
