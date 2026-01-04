@@ -30,6 +30,39 @@ router.post('/',requireAdmin, async (req, res) => {
         return res.status(500).json({ error: "Server error" });
     }
 })
+//DEl /api/teams/delete-by-id/:id
+router.delete('/delete-by-id/:id', requireAdmin, async (req, res) => {
+    const id = req.params?.id;
+    if(!id || isNaN(Number(id)) || Number(id) < 0) return res.status(400).json({error: "Id is invalid"});
+    try{
+        const parsedId = Number(id);
+        const existingTeam = await db.team.findUnique({
+            where: { id: parsedId }
+        });
+        const match = await db.match.findFirst({where:{
+                OR:[
+                    {team1Id: parsedId},
+                    {team2Id:parsedId},
+                ]}
+        });
+        if(match){
+            return res.status(409).json({error: "Cannot delete team that has matches"});
+        }
+        if(!existingTeam){
+            return res.status(404).json({error: "Team not found"});
+        }
+        const del = await db.team.delete({
+            where: {id: parsedId},
+        })
+        return res.status(200).json(del);
+
+    }catch(err){
+        return res.status(500).json({error: "Server error"});
+    }
+
+
+})
+
 //PUT  /api/teams/by-name/:name/score
 router.put("/by-name/:name/score", requireAdmin, async (req, res) => {
     const name = String(req.params.name).trim().toUpperCase();

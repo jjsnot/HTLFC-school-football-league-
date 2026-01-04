@@ -67,3 +67,9 @@
 #del-button:hover{
   background-color: #bf2b2b;
 }
+.error{
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
