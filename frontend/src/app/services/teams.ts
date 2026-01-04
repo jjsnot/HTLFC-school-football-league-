@@ -17,7 +17,10 @@ export class TeamsService {
   }
   createTeam(name:string , score:number){
     return this.http.post<Team>(this.url ,{name : name, score : score}).pipe(tap(r => console.log(r)));
+  }
 
+  deleteTeam(teamId: number) {
+    return this.http.delete<Team>(this.url+"/delete-by-id/" , {: teamId}).pipe(tap(r => console.log(r)));
   }
 
 

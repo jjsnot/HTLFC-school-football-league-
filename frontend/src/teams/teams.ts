@@ -29,6 +29,14 @@ ngOnInit() {
   openPopup() {
     this.popupService.openPopup();
   }
+  deleteTeam(teamId: number) {
+    if (confirm('Are you sure you want to delete this team?')) {
+
+    }
+
+
+
+  }
 
 
 

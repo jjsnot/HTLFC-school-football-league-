@@ -1,9 +1,9 @@
 <button class="add-team-button" (click)="openPopup()">Add new Team</button><br>
 
-@for (team of teams(); track $index){
+@for (team of teams(); track team.id){
   <div class="team_element">
     <p>{{team.name }} | {{team.score}}</p>
       <button id="edit-button">Edit</button>
-      <button id="del-button">Delete</button>
+      <button (click)="deleteTeam()" id="del-button">Delete</button>
   </div>
 }

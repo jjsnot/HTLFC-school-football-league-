@@ -31,8 +31,8 @@ router.post('/',requireAdmin, async (req, res) => {
     }
 })
 //DEl /api/teams/delete-by-id/:id
-router.delete('/delete-by-id/', requireAdmin, async (req, res) => {
-    const id = req.body?.id;
+router.delete('/delete-by-id/:id', requireAdmin, async (req, res) => {
+    const id = req.params?.id;
     if(!id || isNaN(Number(id)) || Number(id) < 0) return res.status(400).json({error: "Id is invalid"});
     try{
         const parsedId = Number(id);
