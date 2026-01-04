@@ -3,6 +3,8 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {PopupService} from '../app/services/create-new-team-popup';
 import {FormsModule} from '@angular/forms';
 import {TeamsService} from '../app/services/teams';
+import {Teams} from '../teams/teams';
+import {Team} from '../app/models/team.model';
 
 @Component({
   selector: 'app-add-new-team-popup',

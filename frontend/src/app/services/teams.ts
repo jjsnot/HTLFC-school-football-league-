@@ -20,7 +20,11 @@ export class TeamsService {
   }
 
   deleteTeam(teamId: number) {
-    return this.http.delete<Team>(this.url+"/delete-by-id/" , {: teamId}).pipe(tap(r => console.log(r)));
+    return this.http.delete<Team>(`${this.url}/delete-by-id/${teamId}` , {} ).pipe(tap(r => this.teams.update(teams => teams.filter(team => team.id !== teamId))));
+  }
+
+  editTeam(team: Team | undefined){
+    return this.http.put(`${this.url}/by-name/${team?.name}/score`, {score : team?.score}).pipe(tap(r => console.log(r)));
   }
 
 

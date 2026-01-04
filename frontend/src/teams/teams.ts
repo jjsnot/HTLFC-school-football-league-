@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {TeamsService} from '../app/services/teams';
 import {PopupService} from '../app/services/create-new-team-popup';
 import { Injectable } from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ import { Injectable } from '@angular/core';
 export class Teams {
   private teamsService = inject(TeamsService);
   teams = this.teamsService.teams;
-  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService , private cdr: ChangeDetectorRef) { }
+  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService ,){ }
 
 
 
@@ -29,9 +30,14 @@ ngOnInit() {
   openPopup() {
     this.popupService.openPopup();
   }
-  deleteTeam(teamId: number) {
-    if (confirm('Are you sure you want to delete this team?')) {
 
+  deleteTeam(team: Team) {
+    if (confirm(`Are you sure you want to delete the "${team.name}" team?`)) {
+    this.teamsService.deleteTeam(team.id).subscribe({
+      next: () => {this.teamsService.getTeams().subscribe()
+      },
+      error: err => {console.log(err)},
+    })
     }
 
 
@@ -39,5 +45,8 @@ ngOnInit() {
   }
 
 
+  editTeam(team: Team) {
+    this.popupService.openPopup_2(team);
 
+  }
 }

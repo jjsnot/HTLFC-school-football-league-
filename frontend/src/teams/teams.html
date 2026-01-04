@@ -3,7 +3,7 @@
 @for (team of teams(); track team.id){
   <div class="team_element">
     <p>{{team.name }} | {{team.score}}</p>
-      <button id="edit-button">Edit</button>
-      <button (click)="deleteTeam()" id="del-button">Delete</button>
+      <button (click)="editTeam(team)" id="edit-button">Edit</button>
+      <button (click)="deleteTeam(team)" id="del-button">Delete</button>
   </div>
 }
