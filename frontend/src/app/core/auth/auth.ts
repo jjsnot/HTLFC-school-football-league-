@@ -25,7 +25,10 @@ export class Auth {
   }
   getToken(): string | null {
     return localStorage.getItem(this.key);
+
 }
+
+
 
 
 }
