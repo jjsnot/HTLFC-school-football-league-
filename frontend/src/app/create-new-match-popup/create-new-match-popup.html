@@ -1,0 +1,36 @@
+<div class="main">
+  <h1 class="dialog-title">Add new Match</h1>
+  <div  class="dialog-content">
+
+    <select class="select" [ngModel]="firstTeam()" (ngModelChange)="firstTeam.set($event)" >
+      <option [ngValue]="null" disabled>Select team</option>
+      @for(team of teams(); track $index){
+        <option [ngValue]="team">{{team.name}} | {{team.score}} </option>
+      }
+    </select>
+
+    <select [ngModel]="secondTeam()" (ngModelChange)="secondTeam.set($event)" class="select">
+      <option [ngValue]="null" disabled>Select team</option>
+      @for(team of SecondTeamOption(); track $index){
+        <option [ngValue]="team">{{team.name}} | {{team.score}} </option>
+      }
+    </select>
+  </div>
+  <div class="dr">
+    <br>
+    <label class="dialog-label">Duration: </label>
+    <input min="0" placeholder="e.g. 45"  type="number" class="dialog-input">
+    <label class="dialog-label">Round: </label>
+    <input min="1" placeholder="e.g. 1"  type="number" class="dialog-input">
+
+  </div>
+  <div class="dialog-actions">
+
+    <button class="dialog-btn" >Confirm</button>
+    <button  (click)="closeDialog()" class="dialog-btn" id="del-button">Close</button> <br>
+
+  </div>
+
+</div>
+<p class="error">{{errorMessage()}}</p>
+
