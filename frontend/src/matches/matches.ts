@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {MatchService} from '../app/services/match-service';
 import {TeamsService} from '../app/services/teams';
 import {Match} from '../app/models/match.model';
+import {PopupService} from '../app/services/popup-service';
 
 @Component({
   selector: 'app-matches',
@@ -16,9 +17,10 @@ export class Matches {
   MatchService = inject(MatchService);
   matches = this.MatchService.match
   isLive = signal(false);
-  constructor(private http: HttpClient ) {}
+  constructor(private http: HttpClient ,private PopupService: PopupService) {}
 
   ngOnInit() {
+    this.TeamService.getTeams().subscribe()
     this.MatchService.getMatches().subscribe(
       {
         next: value => {
@@ -69,5 +71,8 @@ export class Matches {
     this.MatchService.finishMatch(match.id)
     this.isLive.set(false);
     this.MatchService.applyCorrectOrder()
+  }
+  openPopup() {
+    this.PopupService.openPopup_3();
   }
 }

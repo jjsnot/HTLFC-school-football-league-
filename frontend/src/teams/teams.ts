@@ -6,6 +6,7 @@ import {TeamsService} from '../app/services/teams';
 import {PopupService} from '../app/services/popup-service';
 import { Injectable } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatchService} from '../app/services/match-service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class Teams {
   private teamsService = inject(TeamsService);
   teams = this.teamsService.teams;
-  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService ,){ }
+  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService , ){ }
 
 
 
