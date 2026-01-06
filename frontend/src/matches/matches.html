@@ -1,1 +1,45 @@
-<p>matches works!</p>
+<button class="add-team-button">Add new Match</button>
+
+<div class="matches-grid">
+  @for (match of matches(); track match.id) {
+    <div class="team_element">
+
+      <p class="round">Round: {{ match.round }}</p>
+
+      <p class="teams">
+        {{ TeamService.getTeamById(match.team1Id)?.name }}
+        <span class="vs">vs</span>
+        {{ TeamService.getTeamById(match.team2Id)?.name }}
+      </p>
+
+      @if (match.firstTeamScore === null && match.secondTeamScore === null) {
+        <p class="status-text">{{ match.status }}</p>
+      } @else {
+        <p class="score">
+          {{ match.firstTeamScore }}
+          <span class="colon">:</span>
+          {{ match.secondTeamScore }}
+        </p>
+      }
+
+      @if (match.status === "live") {
+        <div class="plus_minus_btn">
+          <button (click)="plus(match , 1)" class="pl_ms-btn">+</button>
+          <button (click)="minus(match , 1)" class="pl_ms-btn">-</button>
+          <button (click)="plus(match , 2)"   class="pl_ms-btn">+</button>
+          <button (click)="minus(match , 2)" class="pl_ms-btn">-</button>
+        </div>
+        <button (click)="finishMatch(match)" class="btn btn-danger">Finish</button>
+      }
+
+      @if (match.status === "scheduled") {
+        <button (click)="startMatch(match)" [disabled]="isLive()" class="btn btn-primary">Start</button>
+      }
+
+      @if (match.status === "finished") {
+        <p class="status-pill finished">The match is over</p>
+      }
+
+    </div>
+  }
+</div>

@@ -1,9 +1,17 @@
-<button class="add-team-button" (click)="openPopup()">Add new Team</button><br>
+<button class="add-team-button" (click)="openPopup()">Add new Team</button>
 
-@for (team of teams(); track team.id){
-  <div class="team_element">
-    <p>{{team.name }} | {{team.score}}</p>
-      <button (click)="editTeam(team)" id="edit-button">Edit</button>
-      <button (click)="deleteTeam(team)" id="del-button">Delete</button>
-  </div>
-}
+<div class="teams-grid">
+  @for (team of teams(); track team.id) {
+    <div class="team-card">
+      <div class="team-info">
+        <p class="team-name">{{ team.name }}</p>
+        <p class="team-score">{{ team.score }}</p>
+      </div>
+
+      <div class="team-actions">
+        <button (click)="editTeam(team)" class="btn btn-primary">Edit</button>
+        <button (click)="deleteTeam(team)" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  }
+</div>

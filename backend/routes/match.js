@@ -153,7 +153,8 @@ if(round === 1){
            data.push({
                round,
                team1Id:teams[i].id,
-               team2Id:teams[i + 1].id
+               team2Id:teams[i + 1].id,
+               duration: 15
            });
            }
        const created_matches = await db.match.createMany({data});
@@ -162,7 +163,7 @@ if(round === 1){
 
 
    }catch(err){
-       return res.status(400).json({error: "Error creating round!"});
+       return res.status(400).json({error: err.message});
    }
 }else {
     return res.status(400).json({error: "Invalid round number!"});
@@ -204,14 +205,7 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
         data.status = s;
     }
 
-    // times
-    const startTime = toDateOrNull(req.body?.startTime);
-    if (startTime !== undefined) {
-        if (startTime !== null && Number.isNaN(startTime)) {
-            return res.status(400).json({ error: "startTime must be a valid date or null" });
-        }
-        data.startTime = startTime;
-    }
+    //
 
     const endTime = toDateOrNull(req.body?.endTime);
     if (endTime !== undefined) {
@@ -219,6 +213,8 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
             return res.status(400).json({ error: "endTime must be a valid date or null" });
         }
         data.endTime = endTime;
+    }else {
+        data.endTime = new Date();
     }
 
     // scores
@@ -240,19 +236,6 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
 
     if (Object.keys(data).length === 0) {
         return res.status(400).json({ error: "nothing to update" });
-    }
-
-
-    if (data.status === "finished") {
-        const willHaveS1 = data.firstTeamScore !== undefined ? data.firstTeamScore : undefined;
-        const willHaveS2 = data.secondTeamScore !== undefined ? data.secondTeamScore : undefined;
-
-
-        if (willHaveS1 === undefined || willHaveS2 === undefined) {
-            return res.status(400).json({
-                error: "When setting status=finished, send firstTeamScore and secondTeamScore in the same request",
-            });
-        }
     }
 
     try {

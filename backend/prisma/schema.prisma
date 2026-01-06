@@ -37,7 +37,7 @@ model Team {
   matchesAsTeam2 Match[] @relation("Team2")
 }
 
-model Match {
+model MatchService {
   id Int    @id @default(autoincrement())
   round     Int
   team1Id Int
@@ -47,13 +47,12 @@ model Match {
   team2 Team @relation("Team2", fields: [team2Id], references: [id], onDelete: Restrict)
 
   status MatchStatus @default(scheduled)
-  startTime DateTime?
+  duration Int
   endTime   DateTime?
 
   firstTeamScore  Int?
   secondTeamScore Int?
 
-  @@index([startTime])
   @@index([team1Id])
   @@index([team2Id])
 }

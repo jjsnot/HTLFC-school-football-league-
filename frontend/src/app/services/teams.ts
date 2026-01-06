@@ -27,5 +27,14 @@ export class TeamsService {
     return this.http.put(`${this.url}/by-name/${team?.name}/score`, {score : team?.score}).pipe(tap(r => console.log(r)));
   }
 
+  getTeamById(id: number) {
+    for(let team of this.teams()){
+      if(team.id === id){
+        return team;
+      }
+    }
+    return null;
+  }
+
 
 }
