@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {PopupService} from '../services/create-new-team-popup';
+import {PopupService} from '../services/popup-service';
 import {TeamsService} from '../services/teams';
 
 @Component({

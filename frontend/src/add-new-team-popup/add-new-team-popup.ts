@@ -1,6 +1,6 @@
 import {Component, signal} from '@angular/core';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {PopupService} from '../app/services/create-new-team-popup';
+import {PopupService} from '../app/services/popup-service';
 import {FormsModule} from '@angular/forms';
 import {TeamsService} from '../app/services/teams';
 import {Teams} from '../teams/teams';

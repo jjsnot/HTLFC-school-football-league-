@@ -3,7 +3,7 @@ import { Team } from '../app/models/team.model';
 import {Auth} from '../app/core/auth/auth';
 import {Router} from '@angular/router';
 import {TeamsService} from '../app/services/teams';
-import {PopupService} from '../app/services/create-new-team-popup';
+import {PopupService} from '../app/services/popup-service';
 import { Injectable } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 

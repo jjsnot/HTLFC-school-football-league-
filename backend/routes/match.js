@@ -38,7 +38,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
     const allowedStatus = new Set(["scheduled", "live", "finished"]);
     const status = allowedStatus.has(statusRaw) ? statusRaw : null;
 
-    const startTime = toDateOrNull(req.body?.startTime);
+    const duration = toInt(req.body?.duration) ?? 15;
     const endTime = toDateOrNull(req.body?.endTime);
 
 
@@ -62,15 +62,9 @@ router.post('/',requireAdmin ,  async (req, res) => {
     }
 
 
-    if (endTime && !startTime) {
-        return res.status(400).json({ error: "startTime is required if endTime is provided" });
+    if(duration < 0){
+        return res.status(400).json({ error: "Duration must be >= 0" });
     }
-
-
-    if (startTime && endTime && endTime < startTime) {
-        return res.status(400).json({ error: "endTime cannot be earlier than startTime" });
-    }
-
 
     if (firstTeamScore !== null && (firstTeamScore < 0)) {
         return res.status(400).json({ error: "firstTeamScore must be >= 0" });
@@ -113,7 +107,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
                 team1Id,
                 team2Id,
                 status,
-                startTime,
+                duration,
                 endTime,
                 firstTeamScore,
                 secondTeamScore,
@@ -122,7 +116,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
         return res.status(201).json(match);
     } catch (err) {
         console.error(err);
-        return res.status(500).json({error: "Server error"});
+        return res.status(500).json({error: err.message});
     }
 
 
