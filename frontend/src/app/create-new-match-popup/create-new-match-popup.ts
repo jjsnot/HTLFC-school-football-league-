@@ -4,6 +4,8 @@ import {PopupService} from '../services/popup-service';
 import {TeamsService} from '../services/teams';
 import {Team} from '../models/team.model';
 import { effect } from '@angular/core';
+import {MatchService} from '../services/match-service';
+import {NotificationService} from '../services/notification';
 @Component({
   selector: 'app-create-new-match-popup',
   imports: [
@@ -14,7 +16,7 @@ import { effect } from '@angular/core';
   styleUrl: './create-new-match-popup.css',
 })
 export class CreateNewMatchPopup {
-  constructor(private popupService: PopupService ,) {
+  constructor(private popupService: PopupService , private MatchService:MatchService , private ns :NotificationService) {
     effect(() => {
       const options = this.SecondTeamOption();
       if (!this.firstTeam) {
@@ -33,6 +35,8 @@ export class CreateNewMatchPopup {
   firstTeam = signal<Team|null>(null);
   secondTeam = signal<Team|null>(null);
   errorMessage = signal("")
+  duration = signal(0)
+  round = signal(1)
 
 
 
@@ -62,5 +66,39 @@ export class CreateNewMatchPopup {
 
 
 
-  protected readonly NgModel = NgModel;
+
+  createMatch() {
+    const first = this.firstTeam();
+    const second = this.secondTeam();
+    const round = this.round();
+    const duration = this.duration();
+    if(!first || !second){
+      this.errorMessage.set("One or both teams are not correct")
+      return;
+    }
+    if(round < 1){
+      this.errorMessage.set("Round must be greater than 0")
+      return;
+    }
+    if(duration < 0){
+      this.errorMessage.set("Duration must be greater or equal than 0")
+      return;
+    }
+
+    this.MatchService.createMatch(round ,first.id  , second.id , duration).subscribe({
+      next: (r) => {
+        this.ns.success(`Match between ${this.teamsService.getTeamById(r.team1Id)?.name} and ${this.teamsService.getTeamById(r.team2Id)?.name} was successfully created!`);
+      },
+      error: err => {
+        const msg = err?.error?.error || err?.error?.message || err?.message || 'Request failed';
+        this.ns.error(msg);
+      }
+
+
+    })
+    this.MatchService.getMatches().subscribe()
+    this.popupService.closePopup();
+    this.ns.info("Create new match popup")
+
+  }
 }

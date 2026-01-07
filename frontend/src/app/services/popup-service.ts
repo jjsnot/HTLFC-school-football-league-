@@ -39,7 +39,7 @@ export class PopupService {
   openPopup_3() {
     this.dialog.open(CreateNewMatchPopup, {
       width: '400px',        // ← Ширина
-      height: '350px',       // ← Высота
+      height: '360px',       // ← Высота
       maxWidth: '90vw',      // На мобилке не больше 90% ширины экрана
       maxHeight: '90vh',     // На мобилке не больше 90% высоты экрана
       disableClose: false,   // Можно ли закрыть кликом вне диалога

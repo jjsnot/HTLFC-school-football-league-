@@ -8,12 +8,14 @@ import {Teams} from '../teams/teams';
 import {AddNewTeamPopup} from '../add-new-team-popup/add-new-team-popup';
 import {View} from '../app/services/view';
 import {Matches} from '../matches/matches';
+import {ToastComponent} from '../toast/toast.component';
+import {NotificationService} from '../app/services/notification';
 
 
 @Component({
   selector: 'app-admin-home',
   standalone: true,
-  imports: [Sidebar, Teams, Matches,],
+  imports: [Sidebar, Teams, Matches, ToastComponent,],
   templateUrl: './admin-home.html',
   styleUrls: ['./admin-home.css'],
 })
@@ -21,9 +23,7 @@ export class AdminHome {
   view = inject(View)
 
 
-  constructor(private auth: Auth, private router: Router ,) {
-
+  constructor(private auth: Auth, private router: Router , private ns: NotificationService) {
   }
-
 
 }

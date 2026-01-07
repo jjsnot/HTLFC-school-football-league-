@@ -7,6 +7,7 @@ import {PopupService} from '../app/services/popup-service';
 import { Injectable } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatchService} from '../app/services/match-service';
+import {NotificationService} from '../app/services/notification';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ import {MatchService} from '../app/services/match-service';
 export class Teams {
   private teamsService = inject(TeamsService);
   teams = this.teamsService.teams;
-  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService , ){ }
+  constructor(public auth: Auth, private popupService: PopupService , private router: Router  , private TeamService: TeamsService ,private ns:NotificationService ){ }
 
 
 
@@ -43,9 +44,15 @@ ngOnInit() {
   deleteTeam(team: Team) {
     if (confirm(`Are you sure you want to delete the "${team.name}" team?`)) {
     this.teamsService.deleteTeam(team.id).subscribe({
-      next: () => {this.teamsService.getTeams().subscribe()
+
+      next: () => {
+        this.ns.success(`Team ${team.name} successfully deleted!`)
+        this.teamsService.getTeams().subscribe()
+
       },
-      error: err => {console.log(err)},
+      error: err => {console.log(err)
+        const msg = err?.error?.error || err?.error?.message || err?.message || 'Request failed';
+        this.ns.error(msg);},
     })
     }
 

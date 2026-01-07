@@ -14,7 +14,7 @@
 .dialog-content {
   display: flex;
   flex-direction: row;
-  margin: 10px 10px ! important;
+  margin: 0 10px ! important;
   padding: 0 25px 0 25px ! important;
 
 }

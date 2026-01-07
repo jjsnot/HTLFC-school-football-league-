@@ -55,6 +55,11 @@ finishMatch(id: number){
     return this.patchMatch(id , {status: "finished",})
 }
 
+  createMatch(round: number,team1Id: number, team2Id: number, duration: number){
+    return this.http.post<Match>(`${this.url}` , {round:round, team1Id:team1Id, team2Id:team2Id, duration:duration})
+
+}
+
 
 
 }

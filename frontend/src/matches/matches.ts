@@ -5,10 +5,14 @@ import {MatchService} from '../app/services/match-service';
 import {TeamsService} from '../app/services/teams';
 import {Match} from '../app/models/match.model';
 import {PopupService} from '../app/services/popup-service';
+import {NotificationService} from '../app/services/notification';
+import {ToastComponent} from '../toast/toast.component';
 
 @Component({
   selector: 'app-matches',
-  imports: [],
+  imports: [
+    ToastComponent
+  ],
   templateUrl: './matches.html',
   styleUrl: './matches.css',
 })
@@ -17,7 +21,7 @@ export class Matches {
   MatchService = inject(MatchService);
   matches = this.MatchService.match
   isLive = signal(false);
-  constructor(private http: HttpClient ,private PopupService: PopupService) {}
+  constructor(private http: HttpClient ,private PopupService: PopupService , private ns: NotificationService) {}
 
   ngOnInit() {
     this.TeamService.getTeams().subscribe()
@@ -75,4 +79,6 @@ export class Matches {
   openPopup() {
     this.PopupService.openPopup_3();
   }
+
+
 }

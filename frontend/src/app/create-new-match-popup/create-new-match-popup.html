@@ -19,14 +19,14 @@
   <div class="dr">
     <br>
     <label class="dialog-label">Duration: </label>
-    <input min="0" placeholder="e.g. 45"  type="number" class="dialog-input">
+    <input [(ngModel)]="duration" min="0" placeholder="e.g. 45"  type="number" class="dialog-input">
     <label class="dialog-label">Round: </label>
-    <input min="1" placeholder="e.g. 1"  type="number" class="dialog-input">
+    <input [(ngModel)]="round" min="1" placeholder="e.g. 1"  type="number" class="dialog-input">
 
   </div>
   <div class="dialog-actions">
 
-    <button class="dialog-btn" >Confirm</button>
+    <button (click)="createMatch()" class="dialog-btn" >Confirm</button>
     <button  (click)="closeDialog()" class="dialog-btn" id="del-button">Close</button> <br>
 
   </div>

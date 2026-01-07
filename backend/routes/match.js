@@ -72,6 +72,10 @@ router.post('/',requireAdmin ,  async (req, res) => {
     if (secondTeamScore !== null && (secondTeamScore < 0)) {
         return res.status(400).json({ error: "secondTeamScore must be >= 0" });
     }
+    const is_next_round = await db.match.findFirst({where:{round: round + 1}});
+    if(is_next_round){
+        return res.status(400).json({ error: `Round: ${round} is already over` });
+    }
 
 
     if (status === "finished") {
@@ -88,15 +92,15 @@ router.post('/',requireAdmin ,  async (req, res) => {
         return res.status(404).json({ error: "One or both teams not found" });
     }
 
-    const dublicate = await db.match.findFirst({
+    const duplicate = await db.match.findFirst({
         where:
             {round ,
             OR: [
                 {team1Id:team1Id, team2Id:team2Id },
-                {team1Id:team2Id, team2Id:team2Id },
+                {team2Id:team1Id, team1Id:team2Id },
             ]}
     });
-    if(dublicate){
+    if(duplicate){
         return res.status(400).json({ error: "This match already exists in this round" });
     }
 
