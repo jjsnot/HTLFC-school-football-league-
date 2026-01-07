@@ -49,7 +49,8 @@ export class MatchService {
 
   }
   setScore(id: number, first_score: number | null , second_score: number | null){
-    return this.patchMatch(id , {firstTeamScore: first_score, secondTeamScore:second_score,})
+     return this.patchMatch(id , {firstTeamScore: first_score, secondTeamScore:second_score,})
+
 }
 finishMatch(id: number){
     return this.patchMatch(id , {status: "finished",})

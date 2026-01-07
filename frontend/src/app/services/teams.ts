@@ -23,8 +23,8 @@ export class TeamsService {
     return this.http.delete<Team>(`${this.url}/delete-by-id/${teamId}` , {} ).pipe(tap(r => this.teams.update(teams => teams.filter(team => team.id !== teamId))));
   }
 
-  editTeam(team: Team ){
-    return this.http.put(`${this.url}/by-name/${team?.name}/score`, {score : team?.score}).pipe(tap(r => console.log(r)));
+  editTeam(team: Team | null){
+    return this.http.put<Team>(`${this.url}/by-name/${team?.name}/score`, {score : team?.score}).pipe(tap(r => console.log(r)));
   }
 
   getTeamById(id: number) {

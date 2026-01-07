@@ -8,6 +8,7 @@ import {PopupService} from '../app/services/popup-service';
 import {NotificationService} from '../app/services/notification';
 import {ToastComponent} from '../toast/toast.component';
 import {View} from '../app/services/view';
+import {pipe, tap} from 'rxjs';
 
 @Component({
   selector: 'app-matches',
@@ -72,10 +73,30 @@ export class Matches implements OnInit {
 
   }
   finishMatch(match: Match) {
-    if(confirm(`Are you sure that score ${match.firstTeamScore}|${match.firstTeamScore} is correct?`)){
+    if(confirm(`Are you sure that score ${match.firstTeamScore}|${match.secondTeamScore} is correct?`)){
+      let firstTeam = this.TeamService.getTeamById(match.team1Id);
+      let secondTeam = this.TeamService.getTeamById(match.team2Id);
+      let firstTeamScore = match.firstTeamScore ?? 0;
+      let secondTeamScore =  match.secondTeamScore ?? 0;
       this.MatchService.finishMatch(match.id)
       this.MatchService.applyCorrectOrder()
-      this.TeamService.editTeam(this.TeamService.getTeamById(match.team1Id))
+      if(!firstTeam || !secondTeam){
+        return;
+      }
+      console.log(firstTeamScore , secondTeamScore);
+      if (firstTeamScore > secondTeamScore) {
+        firstTeam.score = 3;
+        secondTeam.score = 0;
+      } else if (secondTeamScore > firstTeamScore) {
+        secondTeam.score = 3;
+        firstTeam.score = 0;
+      } else {
+        firstTeam.score = 1;
+        secondTeam.score = 1;
+      }
+
+      this.TeamService.editTeam(firstTeam).subscribe()
+      this.TeamService.editTeam(secondTeam).subscribe()
     }
 
   }

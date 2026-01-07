@@ -31,7 +31,7 @@ export class EditPopup {
     if (this.popupService.team) {
       this.popupService.team.score = Number(this.teamScore());
     }
-    this.teamsService.editTeam(this.popupService.team).subscribe({
+    this.teamsService.editTeam(this.popupService.team!).subscribe({
       next:(result) => {
         this.teamsService.getTeams().subscribe();
         this.closeDialog();
