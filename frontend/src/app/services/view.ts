@@ -5,9 +5,13 @@ type ViewMode = 'teams' | 'matches';
 })
 
 export class View {
-
+private key_2 = "IsLive"
   private key = "view";
   currentView = signal<ViewMode>(localStorage.getItem(this.key) as ViewMode ?? "teams");
+
+
+
+
 
 
   toggleView_teams(): void {

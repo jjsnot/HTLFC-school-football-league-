@@ -92,6 +92,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
         return res.status(404).json({ error: "One or both teams not found" });
     }
 
+
     const duplicate = await db.match.findFirst({
         where:
             {round ,
@@ -178,6 +179,7 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
 
     const allowedStatus = new Set(["scheduled", "live", "finished"]);
 
+
     const toIntOrNull = (v) => {
         if (v === undefined) return undefined;
         if (v === null || v === "") return null;
@@ -200,6 +202,11 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
         if (!allowedStatus.has(s)) {
             return res.status(400).json({ error: "status must be scheduled|live|finished" });
         }
+        const isLive = await db.match.findFirst({where:{status:"live"}});
+        if(isLive && s === "live") {
+            return res.status(400).json({ error: "Only one match can be live!"});
+        }
+
         data.status = s;
     }
 

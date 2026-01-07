@@ -1,5 +1,5 @@
-import {Component, inject, signal} from '@angular/core';
-import {Team} from '../app/models/team.model';
+import {Component, inject, OnInit, signal} from '@angular/core';
+
 import {HttpClient} from '@angular/common/http';
 import {MatchService} from '../app/services/match-service';
 import {TeamsService} from '../app/services/teams';
@@ -7,23 +7,24 @@ import {Match} from '../app/models/match.model';
 import {PopupService} from '../app/services/popup-service';
 import {NotificationService} from '../app/services/notification';
 import {ToastComponent} from '../toast/toast.component';
+import {View} from '../app/services/view';
 
 @Component({
   selector: 'app-matches',
   imports: [
-    ToastComponent
   ],
   templateUrl: './matches.html',
   styleUrl: './matches.css',
 })
-export class Matches {
+export class Matches implements OnInit {
+  view = inject(View)
   TeamService = inject(TeamsService)
   MatchService = inject(MatchService);
   matches = this.MatchService.match
-  isLive = signal(false);
   constructor(private http: HttpClient ,private PopupService: PopupService , private ns: NotificationService) {}
 
   ngOnInit() {
+
     this.TeamService.getTeams().subscribe()
     this.MatchService.getMatches().subscribe(
       {
@@ -67,17 +68,28 @@ export class Matches {
 
   startMatch(match: Match) {
     this.MatchService.startMatch(match.id)
-    this.isLive.set(true);
     this.MatchService.applyCorrectOrder()
 
   }
   finishMatch(match: Match) {
-    this.MatchService.finishMatch(match.id)
-    this.isLive.set(false);
-    this.MatchService.applyCorrectOrder()
+    if(confirm(`Are you sure that score ${match.firstTeamScore}|${match.firstTeamScore} is correct?`)){
+      this.MatchService.finishMatch(match.id)
+      this.MatchService.applyCorrectOrder()
+      this.TeamService.editTeam(this.TeamService.getTeamById(match.team1Id))
+    }
+
   }
   openPopup() {
     this.PopupService.openPopup_3();
+  }
+  isfinishMatch(matches: Match[]) {
+    for (let i of matches){
+      if(i.status==="live"){
+        return true;
+      }
+
+    }
+    return false;
   }
 
 

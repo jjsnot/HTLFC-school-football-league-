@@ -33,7 +33,7 @@
       }
 
       @if (match.status === "scheduled") {
-        <button (click)="startMatch(match)" [disabled]="isLive()" class="btn btn-primary">Start</button>
+        <button (click)="startMatch(match)" [disabled]="isfinishMatch(matches())" class="btn btn-primary">Start</button>
       }
 
       @if (match.status === "finished") {
