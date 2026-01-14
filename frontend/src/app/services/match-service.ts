@@ -10,7 +10,7 @@ import {MatchPatch} from '../models/match-patch-model';
 })
 export class MatchService {
   private readonly url ='http://localhost:3000/api/match';
-  match = signal<Match[]>([]);
+  public match = signal<Match[]>([]);
 
   constructor(private http: HttpClient) {}
 
@@ -22,6 +22,15 @@ export class MatchService {
       this.applyCorrectOrder()
       }));
 
+  }
+  getLastRound(){
+    let max = 0;
+    for(let match of this.match()){
+      if(match.round>max){
+        max = match.round;
+      }
+    }
+    return max;
   }
 
   applyCorrectOrder(){

@@ -97,12 +97,12 @@ router.post('/',requireAdmin ,  async (req, res) => {
         where:
             {round ,
             OR: [
-                {team1Id:team1Id, team2Id:team2Id },
-                {team2Id:team1Id, team1Id:team2Id },
+                {team1Id:team1Id},
+                {team2Id:team2Id},
             ]}
     });
     if(duplicate){
-        return res.status(400).json({ error: "This match already exists in this round" });
+        return res.status(400).json({ error: "Match with this team already exists in this round" });
     }
 
     try {

@@ -16,7 +16,7 @@ import {NotificationService} from '../services/notification';
   styleUrl: './create-new-match-popup.css',
 })
 export class CreateNewMatchPopup {
-  constructor(private popupService: PopupService , private MatchService:MatchService , private ns :NotificationService) {
+  constructor(private popupService: PopupService   , private ns :NotificationService) {
     effect(() => {
       const options = this.SecondTeamOption();
       if (!this.firstTeam) {
@@ -30,13 +30,14 @@ export class CreateNewMatchPopup {
       }
     });
   }
+  MatchService = inject(MatchService);
   teamsService = inject(TeamsService);
   teams= this.teamsService.teams
   firstTeam = signal<Team|null>(null);
   secondTeam = signal<Team|null>(null);
   errorMessage = signal("")
   duration = signal(0)
-  round = signal(1)
+  round = signal(this.MatchService.getLastRound())
 
 
 
@@ -49,9 +50,11 @@ export class CreateNewMatchPopup {
     if(!first){
       return all;
     }
+    const usedIds = new Set(this.MatchService.match().filter(f=> f.round === this.round()).flatMap(match => [match.team1Id , match.team2Id]));
     const firstScore = first.score ?? 0;
     return all
       .filter(t => t.id !== first.id)
+      .filter(t => !usedIds.has(t.id))
       .slice()
       .sort((a,b) => {
         const da = Math.abs((a.score ?? 0) - firstScore );
