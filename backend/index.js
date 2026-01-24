@@ -5,6 +5,7 @@ import teams from "./routes/teams.js";
 import match from "./routes/match.js";
 import admin from "./routes/admin.js";
 import bets from "./routes/bets.js";
+import user from "./routes/user.js";
 
 
 const app = express();
@@ -18,4 +19,5 @@ app.use("/api/admin" , admin)
 app.use("/api/teams" ,teams )
 app.use("/api/match", match )
 app.use("/api/bets" , bets)
+app.use("/api/user", user)
 app.listen(3000, () => console.log("API: http://localhost:3000"));
