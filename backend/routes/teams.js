@@ -39,7 +39,7 @@ router.delete('/delete-by-id/:id', requireAdmin, async (req, res) => {
         const existingTeam = await db.team.findUnique({
             where: { id: parsedId }
         });
-        const match = await db.match.findFirst({where:{
+        const match = await db.matchService.findFirst({where:{
                 OR:[
                     {team1Id: parsedId},
                     {team2Id:parsedId},
@@ -57,7 +57,7 @@ router.delete('/delete-by-id/:id', requireAdmin, async (req, res) => {
         return res.status(200).json(del);
 
     }catch(err){
-        return res.status(500).json({error: "Server error"});
+        return res.status(500).json({error: err.message});
     }
 
 

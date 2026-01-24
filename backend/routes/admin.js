@@ -9,7 +9,7 @@ dotenv.config();
 
 function signToken(){
     return jwt.sign(
-        {sub: "admin"} ,
+        {sub: "admin" , role : "ADMIN"} ,
         process.env.JWT_SECRET ,
         {
             expiresIn: process.env.JWT_EXPIRES_IN ?? "5h",

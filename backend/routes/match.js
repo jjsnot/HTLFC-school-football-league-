@@ -13,7 +13,7 @@ function shuffle(arr) {
 
 //GET /****api****/match
 router.get('/', requireAdmin, async (req_, res) => {
-    res.json(await db.match.findMany({orderBy: {id:"asc"}}));
+    res.json(await db.matchService.findMany({orderBy: {id:"asc"}}));
 })
 
 //POST /api/match
@@ -72,7 +72,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
     if (secondTeamScore !== null && (secondTeamScore < 0)) {
         return res.status(400).json({ error: "secondTeamScore must be >= 0" });
     }
-    const is_next_round = await db.match.findFirst({where:{round: round + 1}});
+    const is_next_round = await db.matchService.findFirst({where:{round: round + 1}});
     if(is_next_round){
         return res.status(400).json({ error: `Round: ${round} is already over` });
     }
@@ -93,7 +93,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
     }
 
 
-    const duplicate = await db.match.findFirst({
+    const duplicate = await db.matchService.findFirst({
         where:
             {round ,
             OR: [
@@ -106,7 +106,7 @@ router.post('/',requireAdmin ,  async (req, res) => {
     }
 
     try {
-        const match = await db.match.create({
+        const match = await db.matchService.create({
             data: {
                 round,
                 team1Id,
@@ -140,7 +140,7 @@ if(!Number.isInteger(round) || round < 1) {
 if(teams.length % 2 !== 0) {
     return res.status(400).json({error: "add BYE team!"});
 }
-const exists = await db.match.findFirst({ where: { round } });
+const exists = await db.matchService.findFirst({ where: { round } });
 if (exists) {
     return res.status(409).json({ error: `Round ${round} already exists` });
 }
@@ -156,7 +156,7 @@ if(round === 1){
                duration: 15
            });
            }
-       const created_matches = await db.match.createMany({data});
+       const created_matches = await db.matchService.createMany({data});
        return res.status(201).json({round , matchesCreated: created_matches.count});
 
 
@@ -202,7 +202,7 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
         if (!allowedStatus.has(s)) {
             return res.status(400).json({ error: "status must be scheduled|live|finished" });
         }
-        const isLive = await db.match.findFirst({where:{status:"live"}});
+        const isLive = await db.matchService.findFirst({where:{status:"live"}});
         if(isLive && s === "live") {
             return res.status(400).json({ error: "Only one match can be live!"});
         }
@@ -244,7 +244,7 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
     }
 
     try {
-        const updated = await db.match.update({
+        const updated = await db.matchService.update({
             where: { id },
             data,
         });
