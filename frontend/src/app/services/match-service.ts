@@ -45,11 +45,19 @@ export class MatchService {
     );
   }
   patchMatch(id: number, patch: MatchPatch){
-     this.http.patch<Match>(`${this.url}/${id}`, patch).subscribe(updated => {
-       this.match.update(arr=>
-         arr.map(m => (m.id === updated.id ? updated : m ))
-       )
-       this.applyCorrectOrder()
+     this.http.patch<Match>(`${this.url}/${id}`, patch).subscribe({
+       next:  match =>{
+         {
+           this.match.update(arr=>
+             arr.map(m => (m.id === match.id ? match : m ))
+           )
+           this.applyCorrectOrder()
+           console.log(match)
+         }
+       },
+       error: error => {
+         console.log(error);
+       }
      })
   }
   startMatch(id: number){

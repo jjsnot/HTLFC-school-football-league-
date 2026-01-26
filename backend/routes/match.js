@@ -171,59 +171,53 @@ if(round === 1){
 
 })
 // PATCH /api/match/:id
-router.patch("/:id", requireAdmin ,async (req, res) => {
+// PATCH /api/match/:id
+router.patch("/:id", requireAdmin, async (req, res) => {
     const id = Number.parseInt(req.params.id, 10);
-    if (!Number.isInteger(id)) {
+    if (!Number.isInteger(id) || id <= 0) {
         return res.status(400).json({ error: "Invalid match id" });
     }
 
     const allowedStatus = new Set(["scheduled", "live", "finished"]);
 
-
-    const toIntOrNull = (v) => {
-        if (v === undefined) return undefined;
-        if (v === null || v === "") return null;
+    const toIntOrUndefinedOrNull = (v) => {
+        if (v === undefined) return undefined; // поле не прислали
+        if (v === null || v === "") return null; // прислали null/пусто -> null
         const n = Number.parseInt(String(v), 10);
-        return Number.isInteger(n) ? n : NaN;
+        return Number.isInteger(n) ? n : NaN; // прислали мусор -> NaN
     };
 
-    const toDateOrNull = (v) => {
+    const toDateOrUndefinedOrNull = (v) => {
         if (v === undefined) return undefined;
         if (v === null || v === "") return null;
         const d = new Date(v);
         return Number.isNaN(d.getTime()) ? NaN : d;
     };
 
+    // Собираем data только из того, что реально прислали
     const data = {};
 
-    // status
+    // --- status ---
     if (req.body?.status !== undefined) {
         const s = String(req.body.status).toLowerCase();
         if (!allowedStatus.has(s)) {
             return res.status(400).json({ error: "status must be scheduled|live|finished" });
         }
-        const isLive = await db.matchService.findFirst({where:{status:"live"}});
-        if(isLive && s === "live") {
-            return res.status(400).json({ error: "Only one match can be live!"});
-        }
-
         data.status = s;
     }
 
-    //
-
-    const endTime = toDateOrNull(req.body?.endTime);
+    // --- endTime ---
+    // ВАЖНО: больше НЕ ставим endTime = new Date() если поле не прислали
+    const endTime = toDateOrUndefinedOrNull(req.body?.endTime);
     if (endTime !== undefined) {
         if (endTime !== null && Number.isNaN(endTime)) {
             return res.status(400).json({ error: "endTime must be a valid date or null" });
         }
         data.endTime = endTime;
-    }else {
-        data.endTime = new Date();
     }
 
-    // scores
-    const s1 = toIntOrNull(req.body?.firstTeamScore);
+    // --- scores ---
+    const s1 = toIntOrUndefinedOrNull(req.body?.firstTeamScore);
     if (s1 !== undefined) {
         if (Number.isNaN(s1) || (s1 !== null && s1 < 0)) {
             return res.status(400).json({ error: "firstTeamScore must be integer >= 0 or null" });
@@ -231,7 +225,7 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
         data.firstTeamScore = s1;
     }
 
-    const s2 = toIntOrNull(req.body?.secondTeamScore);
+    const s2 = toIntOrUndefinedOrNull(req.body?.secondTeamScore);
     if (s2 !== undefined) {
         if (Number.isNaN(s2) || (s2 !== null && s2 < 0)) {
             return res.status(400).json({ error: "secondTeamScore must be integer >= 0 or null" });
@@ -244,14 +238,103 @@ router.patch("/:id", requireAdmin ,async (req, res) => {
     }
 
     try {
-        const updated = await db.matchService.update({
-            where: { id },
-            data,
+        const result = await db.$transaction(async (tx) => {
+            // 1) Забираем текущий матч из БД (важно для проверок)
+            const current = await tx.matchService.findUnique({
+                where: { id },
+                select: { id: true, status: true, firstTeamScore: true, secondTeamScore: true },
+            });
+
+            if (!current) {
+                // внутри транзакции можно кинуть ошибку, но проще вернуть специальное значение
+                return { kind: "not_found" };
+            }
+
+            // 2) Проверка "Only one match can be live" — но исключаем текущий матч
+            if (data.status === "live") {
+                const liveOther = await tx.matchService.findFirst({
+                    where: { status: "live", NOT: { id } },
+                    select: { id: true },
+                });
+                if (liveOther) {
+                    return { kind: "only_one_live" };
+                }
+            }
+
+            // 3) Защита от повторного "finished" (повторных выплат)
+            // Если матч уже finished и ты снова шлёшь finished — запрещаем
+            if (current.status === "finished" && data.status === "finished") {
+                return { kind: "already_finished" };
+            }
+
+            // 4) Если переводим в finished — должны быть оба счёта (либо в body, либо уже в БД)
+            const finalS1 = (data.firstTeamScore !== undefined) ? data.firstTeamScore : current.firstTeamScore;
+            const finalS2 = (data.secondTeamScore !== undefined) ? data.secondTeamScore : current.secondTeamScore;
+
+            if (data.status === "finished") {
+                if (finalS1 === null || finalS2 === null || finalS1 === undefined || finalS2 === undefined) {
+                    return { kind: "scores_required" };
+                }
+            }
+
+            // 5) Сначала обновляем матч (внутри транзакции!)
+            const updatedMatch = await tx.matchService.update({
+                where: { id },
+                data,
+            });
+
+            // 6) Если статус стал finished — делаем выплаты/разморозку
+            let updatedUsers = [];
+            if (data.status === "finished") {
+                const bets = await tx.bets.findMany({
+                    where: { matchId: id },
+                    select: { id: true, userId: true, amount: true, pick: true },
+                });
+
+                for (const bet of bets) {
+                    const win =
+                        (finalS1 > finalS2 && bet.pick === "team1") ||
+                        (finalS1 < finalS2 && bet.pick === "team2") ||
+                        (finalS1 === finalS2 && bet.pick === "draw");
+
+                    if (win) {
+                        const user = await tx.user.update({
+                            where: { id: bet.userId },
+                            data: {
+                                frozen_balance: { decrement: bet.amount },
+                                avalible_balance: { increment: bet.amount * 2 },
+                            },
+                        });
+                        updatedUsers.push(user);
+                    } else {
+                        const user = await tx.user.update({
+                            where: { id: bet.userId },
+                            data: {
+                                frozen_balance: { decrement: bet.amount },
+                            },
+                        });
+                        updatedUsers.push(user);
+                    }
+                }
+            }
+
+            return { kind: "ok", updatedMatch, updatedUsers };
         });
-        return res.json(updated);
+
+        // Обработка "мягких" кейсов, которые вернули из транзакции
+        if (result.kind === "not_found") return res.status(404).json({ error: "match not found" });
+        if (result.kind === "only_one_live") return res.status(400).json({ error: "Only one match can be live!" });
+        if (result.kind === "already_finished") return res.status(409).json({ error: "Match is already finished" });
+        if (result.kind === "scores_required") return res.status(400).json({ error: "Scores are required when status is finished" });
+
+        return res.json(
+             result.updatedMatch // оставил твоё имя поля
+        );
     } catch (err) {
-        if (err?.code === "P2025") return res.status(404).json({ error: "match not found" });
         console.error(err);
+        // P2025 тут обычно уже не прилетит, потому что мы проверяем findUnique,
+        // но оставим на всякий случай:
+        if (err?.code === "P2025") return res.status(404).json({ error: "match not found" });
         return res.status(500).json({ error: "Server error" });
     }
 });
