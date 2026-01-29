@@ -66,6 +66,18 @@ model User{
   avalible_balance Int
   frozen_balance Int
   userInBets Bets[]
+  code               Code?
+  code_requests      Int      @default(0)
+  last_code_request  DateTime?
+
+}
+model Code{
+  id Int    @id @default(autoincrement())
+  hashed_code String
+  created_at DateTime @default(now())
+  userId      Int      @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 
 }
 model Bets{
