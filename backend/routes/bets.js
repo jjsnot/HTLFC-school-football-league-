@@ -1,5 +1,5 @@
 import {json, Router} from 'express';
-import {requireAdmin} from "../middleware/requireAdmin.js";
+import {requireAdmin, requireLog} from "../middleware/requireAdmin.js";
 import {db} from "../db.js";
 
 
@@ -17,7 +17,7 @@ router.get('/', async (req_, res) => {
     res.json(await db.bets.findMany({orderBy: {id:"asc"}}));
 })
 //POST
-router.post("/", async (req, res) => {
+router.post("/",requireLog, async (req, res) => {
     const matchID = toInt(req.body?.matchId);
     const userID = toInt(req.body?.userId);
     const amount = toInt(req.body?.amount);
