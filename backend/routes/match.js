@@ -170,7 +170,7 @@ if(round === 1){
 
 
 })
-// PATCH /api/match/:id
+
 // PATCH /api/match/:id
 router.patch("/:id", requireAdmin, async (req, res) => {
     const id = Number.parseInt(req.params.id, 10);

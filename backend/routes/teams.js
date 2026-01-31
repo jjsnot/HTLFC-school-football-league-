@@ -69,17 +69,19 @@ router.put("/by-name/:name/score", requireAdmin, async (req, res) => {
     const score = req.body?.score;
     if(!name) return res.status(400).json({error: "Name is required"});
     if(!Number.isInteger(score)) {
-        res.status(400).json({error: "Score must be an integer >=0"});
+        return res.status(400).json({error: "Score must be an integer >=0"});
     }
-    if(!await db.team.findUnique({
+    const teamObj = await db.team.findUnique({
         where: {name: name},
-    })){
-        return res.status(400).json({error: "Team does not exist"});
+    })
+    if(!teamObj){
+        return res.status(404).json({error: "Team does not exist"});
     }
+    let act_score = teamObj.score + score;
     try{
         const updated = await db.team.update({
             where: {name},
-            data: {score}
+            data: {score: act_score},
         })
         return res.status(201).json(updated)
     }catch(err){

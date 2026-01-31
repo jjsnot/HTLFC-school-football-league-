@@ -15,10 +15,9 @@ router.get('/', async (req_, res) => {
 })
 router.post('/', async (req, res) => {
     const email = req.body.email;
-    const balance = toInt(req.body.avalible_balance);
     try{
         const user = await db.user.create({
-            data: {email: email, avalible_balance: balance , frozen_balance: 0},
+            data: {email: email, avalible_balance: 0 , frozen_balance: 0},
         })
         res.json(user)
     }catch(err){

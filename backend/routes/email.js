@@ -1,5 +1,6 @@
 import express, {Router} from "express";
-
+import {db} from "../db.js";
+import * as crypto from "crypto"
 
 const router = Router();
 export default router;
@@ -58,43 +59,101 @@ function loginCodeEmailHtml(code, minutes = 10, appName = "Scoro") {
 </html>`;
 }
 
-router.post("/", async (req, res) => {
-    const email = String(req.body?.email ?? "").trim();
+
+
+// ожидаются твои функции:
+// - is_correct_Email(email)
+// - generate_secret_key()
+// - loginCodeEmailHtml(code)
+// - hashOtp(code)
+
+export async function sendLoginCode(emailRaw) {
+    const email = String(emailRaw ?? "").trim().toLowerCase();
     if (!is_correct_Email(email)) {
-        return res.status(400).json({error : "Email is invalid"});
-    }
-    const response = await fetch("https://mail.qsk.me/api/send", {
-        method: "POST",
-        headers: {
-            "Authorization": process.env.email_TOKEN,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "to": email,
-            "from": "noreply@shov.studio",
-            "subject": "Bestätigungscode",
-            "html":loginCodeEmailHtml(generate_secret_key()),
-            "use_html": true
-        })
-    });
-
-
-    const { message, success } = await response.json();
-
-
-    if (!success) {
-        return res.status(400).json({ message });
+        return { ok: false, status: 400, error: "Email is invalid" };
     }
 
-    res.status(200).json({ message });
-});
-function is_correct_Email(email) {
+    const code = generate_secret_key(); // строка/число
+    const html = loginCodeEmailHtml(code);
+
+    try {
+        const result = await db.$transaction(async (tx) => {
+            const user = await tx.user.upsert({
+                where: { email },
+                update: {},
+                create: { email, avalible_balance: 0, frozen_balance: 0 },
+            });
+
+            const codeObj = await tx.code.findUnique({ where: { userId: user.id } });
+
+            if (codeObj) {
+                const canSendAgain = Date.now() - codeObj.created_at.getTime() >= 5 * 60 * 1000;
+                if (!canSendAgain) return { kind: "wait" };
+            }
+
+            await tx.code.upsert({
+                where: { userId: user.id },
+                update: { hashed_code: hashOtp(code), created_at: new Date() },
+                create: { userId: user.id, hashed_code: hashOtp(code) },
+            });
+
+            return { kind: "ok" };
+        });
+
+        if (result.kind === "wait") {
+            return { ok: false, status: 429, error: "Try again later" };
+        }
+
+        const response = await fetch("https://mail.qsk.me/api/send", {
+            method: "POST",
+            headers: {
+                Authorization: process.env.email_TOKEN,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                to: email,
+                from: "noreply@shov.studio",
+                subject: "Bestätigungscode",
+                html,
+                use_html: true,
+            }),
+        });
+
+        let payload;
+        try {
+            payload = await response.json();
+        } catch {
+            payload = null;
+        }
+
+        const success = Boolean(payload?.success);
+
+        if (!response.ok || !success) {
+            return { ok: false, status: 400, error: "Email was not sent" };
+        }
+
+        return { ok: true, status: 200, data: { status: "success" } };
+    } catch (err) {
+        return { ok: false, status: 500, error: String(err) };
+    }
+}
+export function is_correct_Email(email) {
     if (typeof email !== "string") return false;
     return email.trim().toLowerCase().endsWith("@htlstp.at");
 }
 function generate_secret_key() {
     return Math.floor(100000 + Math.random() * 900000);
 }
-
+function hashOtp(code) {
+    return crypto.createHmac("sha256", process.env.OTP_SECRET).update(String(code)).digest("hex");
+}
+export function verifyOtpWithExpiry(codeFromUser, codeObj, ttlMinutes = 10) {
+    if (!codeObj?.hashed_code || !codeObj?.created_at) return { ok: false, reason: "NO_CODE" };
+    const expiresAt = new Date(codeObj.created_at.getTime() + ttlMinutes * 60 * 1000);
+    if (expiresAt <= new Date()) return { ok: false, reason: "EXPIRED" };
+    const ok = hashOtp(codeFromUser) === codeObj.hashed_code;
+    if (!ok) return { ok: false, reason: "WRONG" };
+    return { ok: true };
+}
 
 
