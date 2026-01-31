@@ -18,7 +18,7 @@ export class Auth {
   }
   logout() {
     localStorage.removeItem(this.key);
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('admin/login');
   }
   isLoggedIn(): boolean {
     return !!this.getToken()

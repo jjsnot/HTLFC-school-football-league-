@@ -1,0 +1,33 @@
+<div class="topbar"></div>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>User Login/SignUp</h2>
+
+    <div class="auth-row">
+      <label>Email:</label>
+      <input type= "email" placeholder="name@htlstp.at" [disabled]="isSent()" [(ngModel)]="email" (ngModelChange)="checkEmail()" >
+      @if(isSent()){
+        <button id="changeEmail" (click)="changeEmail()">Change Email</button>
+      }
+    </div>
+
+    @if (isSent()){
+      <div class="auth-row">
+        <label>Code:</label>
+        <input placeholder="123456"  [(ngModel)]="code">
+      </div>
+    }
+    @if (!isSent()) {
+      <button (click)="tuggleSent()">Send OTP Code</button>
+    } @else {
+      <button (click)="verifyEmail()">Verify</button>
+    }
+
+
+    <div class="helper">Wir senden dir einen Code per E-Mail.</div>
+    <p class="error">{{error()}}</p>
+  </div>
+
+</div>
+

@@ -12,8 +12,8 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './login-page-component.css',
 })
 export class LoginPageComponent {
-  login = "";
-  password = "";
+  login = signal("");
+  password = signal("");
   error = signal("");
 
   constructor(private auth: Auth, private router: Router) {
@@ -22,7 +22,7 @@ export class LoginPageComponent {
     }
   }
   submit() {
-    this.auth.login(this.login, this.password).subscribe({
+    this.auth.login(this.login(), this.password()).subscribe({
       next: () => this.router.navigateByUrl('/admin/home'),
       error: () => this.error.set('Invalid login or password')
     });
