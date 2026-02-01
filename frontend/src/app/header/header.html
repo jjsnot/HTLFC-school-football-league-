@@ -1,0 +1,27 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" (click)="view.toggleView_user('home')">
+      <span class="brand-name">{{ projectName }}</span>
+    </a>
+
+    <nav class="nav">
+      <a class="nav-btn"  (click)="view.toggleView_user('wetten')">Meine Wetten</a>
+      <a class="nav-btn" (click)="view.toggleView_user('baum')">Turnierbaum</a>
+      <a class="nav-btn" (click)="view.toggleView_user('top')">Top Users</a>
+      <a class="nav-btn" (click)="loginAsUser.logout()">Logout</a>
+    </nav>
+
+    <div class="right">
+      <button class="menu-btn" type="button" (click)="toggleMenu($event)" aria-label="Menu">
+        ☰
+      </button>
+
+      <div class="menu" [class.open]="menuOpen">
+        <a class="menu-item" (click)="view.toggleView_user('wetten')">Maine Wetten</a>
+        <a class="menu-item" (click)="view.toggleView_user('baum')">Turnierbaum</a>
+        <a class="menu-item" (click)="view.toggleView_user('top')">Top Users</a>
+        <a class="menu-item" (click)="loginAsUser.logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+</header>

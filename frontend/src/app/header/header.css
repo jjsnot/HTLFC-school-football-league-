@@ -1,0 +1,201 @@
+/* ===== Header / Topbar ===== */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background: #0b3a9d;
+  border-bottom: 1px solid rgba(255,255,255,.18);
+}
+
+/* Full width bar */
+.topbar-inner{
+  width: 100%;
+  margin: 0;
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Brand (left) */
+.brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  user-select: none;
+  margin-right: auto;            /* forces brand to stay left */
+}
+
+.brand-badge{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7dd3fc, #a78bfa);
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+
+.brand-name{
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: #fff;
+  font-size: 20px;
+}
+
+/* Desktop nav (RIGHT) */
+.nav{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  justify-content: flex-end;     /* align items to the end */
+  margin-left: 0;                /* brand already pushes */
+}
+
+/* Nav buttons */
+.nav-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  color: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, opacity .12s ease;
+}
+
+.nav-btn:hover{
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.28);
+}
+
+.nav-btn:active{
+  transform: translateY(1px);
+}
+
+.nav-btn.active{
+  color: #0b3a9d;
+  background: #fff;
+  border-color: transparent;
+}
+
+/* Right area (hamburger + dropdown) */
+.right{
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;             /* small gap from nav */
+}
+
+/* Hamburger button */
+.menu-btn{
+  width: 46px;
+  height: 44px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.14);
+  color: rgba(255,255,255,.95);
+
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background .12s ease, border-color .12s ease, transform .12s ease;
+}
+
+.menu-btn:hover{
+  background: rgba(255,255,255,.20);
+  border-color: rgba(255,255,255,.34);
+}
+
+.menu-btn:active{
+  transform: translateY(1px);
+}
+
+/* Dropdown menu (adaptive size) */
+.menu{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+
+  width: min(260px, calc(100vw - 24px));
+  padding: 10px;
+
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(10, 18, 40, .92);
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+}
+
+.menu.open{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Menu items */
+.menu-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(255,255,255,.92);
+}
+
+.menu-item:hover{
+  background: rgba(255,255,255,.10);
+}
+
+.menu-item + .menu-item{
+  margin-top: 6px;
+}
+
+/* ===== Responsive ===== */
+/* On small screens: hide nav, show hamburger */
+@media (max-width: 760px){
+  .nav{
+    display: none;
+  }
+
+  .right{
+    margin-left: 0;              /* no extra gap on mobile */
+  }
+
+  .menu-btn{
+    display: inline-flex;
+  }
+}
+
+/* On larger screens: hide hamburger & dropdown (optional) */
+@media (min-width: 761px){
+  .menu-btn{
+    display: none;
+  }
+  .menu{
+    display: none;
+  }
+}

@@ -5,8 +5,6 @@ import {Router} from '@angular/router';
 import {TeamsService} from '../app/services/teams';
 import {PopupService} from '../app/services/popup-service';
 import { Injectable } from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatchService} from '../app/services/match-service';
 import {NotificationService} from '../app/services/notification';
 
 @Injectable({
