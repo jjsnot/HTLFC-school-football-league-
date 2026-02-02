@@ -8,7 +8,7 @@ const { Prisma } = prismaPkg;
 const router = Router();
 
 //GET /api/teams
-router.get('/',requireAdmin , async (_req, res) => {
+router.get('/' , async (_req, res) => {
     const teams = await db.team.findMany({orderBy: {name:"asc"}});
     res.json(teams);
 })

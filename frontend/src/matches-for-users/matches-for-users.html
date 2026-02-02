@@ -1,0 +1,10 @@
+@if(!live_match()){
+  <p>matches will start soon!</p>
+} @else {
+  <p>{{this.TeamsService.getTeamById(this.live_match()!.team1Id)!.name}} | {{this.TeamsService.getTeamById(this.live_match()!.team2Id)!.name}}</p>
+  <p>{{this.live_match()?.firstTeamScore}} | {{this.live_match()?.secondTeamScore}}</p>
+  <p>{{endAt() - Date.now() | date:'mm:ss'}}</p>
+
+
+
+}

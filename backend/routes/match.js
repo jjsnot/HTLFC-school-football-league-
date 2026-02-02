@@ -12,7 +12,7 @@ function shuffle(arr) {
 }
 
 //GET /****api****/match
-router.get('/', requireAdmin, async (req_, res) => {
+router.get('/', async (req_, res) => {
     res.json(await db.matchService.findMany({orderBy: {id:"asc"}}));
 })
 
