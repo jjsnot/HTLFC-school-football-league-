@@ -242,7 +242,7 @@ router.patch("/:id", requireAdmin, async (req, res) => {
             // 1) Забираем текущий матч из БД (важно для проверок)
             const current = await tx.matchService.findUnique({
                 where: { id },
-                select: { id: true, status: true, firstTeamScore: true, secondTeamScore: true },
+                select: { id: true, status: true, firstTeamScore: true, secondTeamScore: true , endTime:true , duration:true },
             });
 
             if (!current) {
@@ -276,12 +276,16 @@ router.patch("/:id", requireAdmin, async (req, res) => {
                     return { kind: "scores_required" };
                 }
             }
+            if (data.status === "live") {
+                data.endTime = new Date(Date.now() + current.duration * 60 * 1000);
+            }
 
             // 5) Сначала обновляем матч (внутри транзакции!)
             const updatedMatch = await tx.matchService.update({
                 where: { id },
                 data,
             });
+
 
             // 6) Если статус стал finished — делаем выплаты/разморозку
             let updatedUsers = [];
@@ -337,5 +341,6 @@ router.patch("/:id", requireAdmin, async (req, res) => {
         if (err?.code === "P2025") return res.status(404).json({ error: "match not found" });
         return res.status(500).json({ error: "Server error" });
     }
+
 });
 export default router;

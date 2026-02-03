@@ -1,18 +1,25 @@
 <app-header></app-header>
-@if (view.currentView_Users()==="wetten") {
-  <p>wetten</p>
 
-}
-@if (view.currentView_Users()==="baum") {
-  <p>baum</p>
+<div class="view-container">
+  @if (view.currentView_Users()==="wetten") {
+    <div class="view-content">
+      <p>wetten</p>
+    </div>
+  }
 
-}
-@if (view.currentView_Users()==="top") {
-  <p>top</p>
+  @if (view.currentView_Users()==="baum") {
+    <div class="view-content">
+      <p>baum</p>
+    </div>
+  }
 
-}
-@if (view.currentView_Users()==="home") {
-<app-matches-for-users></app-matches-for-users>
+  @if (view.currentView_Users()==="top") {
+    <div class="view-content">
+      <p>top</p>
+    </div>
+  }
 
-}
-
+  @if (view.currentView_Users()==="home") {
+    <app-matches-for-users></app-matches-for-users>
+  }
+</div>

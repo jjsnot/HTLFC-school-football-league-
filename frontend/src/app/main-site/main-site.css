@@ -1,0 +1,19 @@
+/* Nur für diesen Component */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #0a1228;
+}
+
+/* Container für die Views */
+.view-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 18px;
+}
+
+/* Verhindert Konflikte mit Child-Components */
+:host ::ng-deep app-matches-for-users {
+  display: block;
+}

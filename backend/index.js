@@ -11,7 +11,7 @@ import email from "./routes/email.js";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:4200" }));
+app.use(cors({ origin: "*" }));//change localhost
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
@@ -22,4 +22,4 @@ app.use("/api/match", match )
 app.use("/api/bets" , bets)
 app.use("/api/user", user)
 app.use("/api/email", email)
-app.listen(3000, () => console.log("API: http://localhost:3000"));
+app.listen(3000,'0.0.0.0', () => console.log("API: http://localhost:3000"));

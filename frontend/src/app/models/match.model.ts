@@ -6,7 +6,7 @@ export interface Match {
   team2Id: number;
   status: "live" | "scheduled" | "finished"
   duration: number;
-  endTime?: number
+  endTime?: number;
 
   firstTeamScore?:number
   secondTeamScore?:number

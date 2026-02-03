@@ -1,10 +1,32 @@
-@if(!live_match()){
-  <p>matches will start soon!</p>
-} @else {
-  <p>{{this.TeamsService.getTeamById(this.live_match()!.team1Id)!.name}} | {{this.TeamsService.getTeamById(this.live_match()!.team2Id)!.name}}</p>
-  <p>{{this.live_match()?.firstTeamScore}} | {{this.live_match()?.secondTeamScore}}</p>
-  <p>{{endAt() - Date.now() | date:'mm:ss'}}</p>
+<div class="live-match-container">
+  <div class="live-match-card">
+    @if(!live_match()) {
+      <p class="match-waiting">Matches will start soon!</p>
+    } @else {
+      <!-- Optional: Live Badge -->
+      <div class="live-badge">
+        Live
+      </div>
 
+      <p class="team-names">
+        {{this.TeamsService.getTeamById(this.live_match()!.team1Id)!.name}}
+        <span class="team-separator">|</span>
+        {{this.TeamsService.getTeamById(this.live_match()!.team2Id)!.name}}
+      </p>
 
+      <div class="score-display">
+        {{this.live_match()?.firstTeamScore}}
+        <span class="score-separator">|</span>
+        {{this.live_match()?.secondTeamScore}}
+      </div>
 
-}
+      @if (isNaN(remaining()) || remaining() === 0) {
+        <p class="loading-text">Loading...</p>
+      } @else {
+        <div class="match-timer">
+          {{remaining() | date: "mm:ss"}}
+        </div>
+      }
+    }
+  </div>
+</div>
