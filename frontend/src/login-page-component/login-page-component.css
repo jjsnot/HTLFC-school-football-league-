@@ -99,3 +99,8 @@ p {
     font-size:  14px;
   }
 }
+:host {
+  display: block;
+  background: white;
+  min-height: 100vh;
+}

@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {Header} from '../header/header';
 import {View} from '../services/view';
 import {MatchesForUsers} from '../../matches-for-users/matches-for-users';
+import {SocketService} from '../services/socket-service';
 
 @Component({
   selector: 'app-main-site',
@@ -17,7 +18,7 @@ import {MatchesForUsers} from '../../matches-for-users/matches-for-users';
 })
 export class MainSite {
   view = inject(View)
-  constructor(private router: Router) {
+  constructor(private router: Router , private socketService: SocketService) {
     if(localStorage.getItem('token') === null) {
       router.navigateByUrl('login');
     }
