@@ -8,6 +8,11 @@
   border-bottom: 1px solid rgba(255,255,255,.18);
 }
 
+/* Balance pill (desktop in nav) */
+#bal{
+  background: rgb(129, 0, 92);
+}
+
 /* Full width bar */
 .topbar-inner{
   width: 100%;
@@ -86,6 +91,23 @@
   color: #0b3a9d;
   background: #fff;
   border-color: transparent;
+}
+
+/* Mobile balance (next to hamburger) */
+.mobile-balance{
+  display: none;                 /* default hidden (desktop) */
+  align-items: center;
+  white-space: nowrap;
+
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  color: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
 }
 
 /* Right area (hamburger + dropdown) */
@@ -175,27 +197,42 @@
 }
 
 /* ===== Responsive ===== */
-/* On small screens: hide nav, show hamburger */
+
+/* Mobile: hide nav, show hamburger + mobile balance */
 @media (max-width: 760px){
   .nav{
     display: none;
   }
 
+  /* If you kept Balance inside nav on desktop (class nav-balance), hide it on mobile */
+  .nav-balance{
+    display: none;
+  }
+
   .right{
-    margin-left: 0;              /* no extra gap on mobile */
+    margin-left: 0;
   }
 
   .menu-btn{
     display: inline-flex;
   }
+
+  .mobile-balance{
+    display: inline-flex;        /* show balance next to hamburger */
+    margin-right: 10px;
+  }
 }
 
-/* On larger screens: hide hamburger & dropdown (optional) */
+/* Desktop: hide hamburger + dropdown, keep nav visible */
 @media (min-width: 761px){
   .menu-btn{
     display: none;
   }
   .menu{
     display: none;
+  }
+
+  .mobile-balance{
+    display: none;               /* ensure hidden on desktop */
   }
 }

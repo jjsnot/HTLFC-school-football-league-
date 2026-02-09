@@ -5,6 +5,7 @@
     </a>
 
     <nav class="nav">
+      <a class="nav-btn nav-balance" id="bal">Balance: {{balance()}}</a>
       <a class="nav-btn"  (click)="view.toggleView_user('wetten')">Meine Wetten</a>
       <a class="nav-btn" (click)="view.toggleView_user('baum')">Turnierbaum</a>
       <a class="nav-btn" (click)="view.toggleView_user('top')">Top Users</a>
@@ -12,6 +13,7 @@
     </nav>
 
     <div class="right">
+      <span class="mobile-balance" id="bal">Balance: {{balance()}}</span>
       <button class="menu-btn" type="button" (click)="toggleMenu($event)" aria-label="Menu">
         ☰
       </button>
