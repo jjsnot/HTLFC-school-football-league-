@@ -48,12 +48,6 @@ export class MatchesForUsers {
     this.TeamsService.getTeams().subscribe(teams => {console.log(teams);});
     this.MatchService.getMatches().subscribe();
 
-    interval(3000)
-      .pipe(
-        switchMap(() => this.MatchService.getMatches()),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe();
 
   }
 

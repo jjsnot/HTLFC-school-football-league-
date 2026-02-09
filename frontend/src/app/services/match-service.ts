@@ -14,7 +14,15 @@ export class MatchService {
 
   constructor(private http: HttpClient) {}
 
-
+  updateMatch(incoming: Match) {
+    this.match.update(list => {
+      const idx = list.findIndex(m => m.id === incoming.id);
+      if (idx === -1) return [incoming, ...list];
+      const copy = [...list];
+      copy[idx] = { ...copy[idx], ...incoming };
+      return copy;
+    });
+  }
 
   getMatches(): Observable<Match[]> {
     return this.http.get<Match[]>(this.url).pipe(tap(match => {

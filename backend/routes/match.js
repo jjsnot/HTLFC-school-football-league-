@@ -330,7 +330,7 @@ router.patch("/:id", requireAdmin, async (req, res) => {
         if (result.kind === "only_one_live") return res.status(400).json({ error: "Only one match can be live!" });
         if (result.kind === "already_finished") return res.status(409).json({ error: "Match is already finished" });
         if (result.kind === "scores_required") return res.status(400).json({ error: "Scores are required when status is finished" });
-
+        req.app.locals.io?.emit("scoreUpdated", result.updatedMatch);
         return res.json(
              result.updatedMatch // оставил твоё имя поля
         );
