@@ -19,9 +19,9 @@ router.get('/', async (req_, res) => {
 //POST
 router.post("/",requireLog, async (req, res) => {
     const matchID = toInt(req.body?.matchId);
-    const userID = toInt(req.body?.userId);
+    const userID = toInt(req.user.id);
     const amount = toInt(req.body?.amount);
-
+    console.log(req.user);
     const allowedPicks = new Set(["team1", "team2", "draw"]);
     const pick = allowedPicks.has(req.body?.pick) ? req.body.pick : null;
 

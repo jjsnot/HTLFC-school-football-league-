@@ -9,9 +9,9 @@ import {is_correct_Email} from "./email.js";
 const { Prisma } = prismaPkg;
 dotenv.config();
 
-function signToken({ sub, role }) {
+function signToken({ sub, role , id}) {
     return jwt.sign(
-        { sub: String(sub), role: String(role).toUpperCase() },
+        { sub: String(sub), id: Number(id) ,role: String(role).toUpperCase() },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN ?? "24h" }
     );
@@ -68,7 +68,7 @@ router.post("/verify", async (req, res) => {
         await db.code.delete({ where: { userId: userObj.id } });
 
 
-        const token = signToken({ sub: email, role: "USER" });
+        const token = signToken({ sub: email, id: userObj.id,  role: "USER" });
         return res.json({ token });
     } catch (err) {
         return res.status(500).json({ error: String(err) });

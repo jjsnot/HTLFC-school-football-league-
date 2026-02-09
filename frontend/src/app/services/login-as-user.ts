@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 export class LoginAsUserService {
   constructor(private http: HttpClient , private router: Router) {
   }
+
   request(email: string) {
     return this.http.post("http://localhost:3000/api/admin/request" , {email})
   }
