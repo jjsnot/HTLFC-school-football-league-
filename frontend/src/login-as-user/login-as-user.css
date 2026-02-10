@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: #0b1220;
+  background: #1d2c3a;
 }
 
 /* Card */
@@ -92,14 +92,13 @@
   font-weight: 700;
   cursor: pointer;
   color: #0b1220;
-  background: linear-gradient(135deg, #7dd3fc, #a78bfa);
-  box-shadow: 0 10px 24px rgba(167,139,250,.25);
+  background: #03ffff;
   transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
 }
 
 .auth-card button:hover{
   filter: brightness(1.05);
-  box-shadow: 0 14px 28px rgba(167,139,250,.30);
+  box-shadow: 0 14px 28px rgba(46, 247, 255, 0.3);
 }
 
 .auth-card button:active{
