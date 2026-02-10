@@ -24,6 +24,10 @@ export class SocketService {
       this.MatchService.updateMatch(data);
 
     })
+    this.socket.on('NewMatch', (data:Match[]) => {
+      this.MatchService.match.set(data);
+      this.MatchService.applyCorrectOrder()
+    })
 
 
   }

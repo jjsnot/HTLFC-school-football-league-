@@ -6,6 +6,7 @@ import {Header} from '../header/header';
 import {View} from '../services/view';
 import {MatchesForUsers} from '../../matches-for-users/matches-for-users';
 import {SocketService} from '../services/socket-service';
+import {Matches} from '../../matches/matches';
 
 @Component({
   selector: 'app-main-site',
@@ -13,7 +14,8 @@ import {SocketService} from '../services/socket-service';
   styleUrl: './main-site.css',
   imports: [
     Header,
-    MatchesForUsers
+    MatchesForUsers,
+    Matches
   ]
 })
 export class MainSite {

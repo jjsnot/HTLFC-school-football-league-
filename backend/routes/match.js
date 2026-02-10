@@ -118,6 +118,8 @@ router.post('/',requireAdmin ,  async (req, res) => {
                 secondTeamScore,
             },
         });
+        req.app.locals.io?.emit("NewMatch",await db.matchService.findMany({orderBy: {id:"asc"}}));
+
         return res.status(201).json(match);
     } catch (err) {
         console.error(err);
