@@ -16,6 +16,16 @@ export default router;
 router.get('/', async (req_, res) => {
     res.json(await db.bets.findMany({orderBy: {id:"asc"}}));
 })
+//GET
+router.get('/by/match/:id', async (req, res) => {
+    const id = Number.parseInt(req.params.id, 10);
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({error: "Invalid match id"});
+    }
+    res.json(await db.bets.findMany({
+        where: {matchId: id}, orderBy: {id: "asc"},
+    }))
+})
 //POST
 router.post("/",requireLog, async (req, res) => {
     const matchID = toInt(req.body?.matchId);
@@ -62,10 +72,11 @@ router.post("/",requireLog, async (req, res) => {
                 data: { matchId: matchID, userId: userID, pick, amount },
             });
 
-            return { bet, change_amount };
+            return {bet};
         });
-
+        req.app.locals.io?.emit("betsUpdate", await db.bets.findMany({orderBy: {id:"asc"}}));
         return res.status(200).json(result);
+
     } catch (err) {
         return res.status(400).json({ error: err.message });
     }

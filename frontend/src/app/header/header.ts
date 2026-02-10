@@ -1,20 +1,27 @@
-import {Component, HostListener, inject, signal} from '@angular/core';
+import {Component, computed, HostListener, inject, signal} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {View} from '../services/view';
 import {LoginAsUserService} from '../services/login-as-user';
+import {User} from '../user/user';
 
 @Component({
   selector: 'app-header',
   imports: [
-    RouterLink,
-    RouterLinkActive
+
   ],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
   email = signal<string | undefined>("")
-  balance  = signal<number | undefined>(0);
+  balance  = computed(() =>{
+    let user = this.loginAsUser.user()
+    if(user){
+      return this.loginAsUser.user()!.avalible_balance
+    }else
+      return 0
+
+  })
 
   projectName = 'Scoro';
   menuOpen = false;
@@ -23,10 +30,7 @@ export class Header {
   constructor(private router: Router) {
   }
   ngOnInit() {
-    this.loginAsUser.getUser().subscribe(user => {
-      this.email.set(user.email);
-      this.balance.set(user.avalible_balance);
-    })
+    this.loginAsUser.getUser().subscribe()
   }
 
 

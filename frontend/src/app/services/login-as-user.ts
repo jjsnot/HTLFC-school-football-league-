@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
 import {Router} from '@angular/router';
@@ -8,6 +8,7 @@ import {AllUsers, User} from '../models/user-model';
   providedIn: 'root',
 })
 export class LoginAsUserService {
+  public user = signal<User | null>(null)
   constructor(private http: HttpClient , private router: Router) {
   }
 
@@ -19,7 +20,7 @@ export class LoginAsUserService {
       .pipe(tap(res => localStorage.setItem("token" , res.token)));
   }
   getUser(): Observable<User>{
-    return this.http.get<User>("http://localhost:3000/api/user/acc");
+    return this.http.get<User>("http://localhost:3000/api/user/acc").pipe(tap(res => this.user.set(res)));
   }
   getAllUsers(){
     return this.http.get<AllUsers[]>("http://localhost:3000/api/user");

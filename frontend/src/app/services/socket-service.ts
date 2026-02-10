@@ -2,6 +2,12 @@ import {inject, Injectable} from '@angular/core';
 import {io, Socket} from 'socket.io-client';
 import {Match} from '../models/match.model';
 import {MatchService} from './match-service';
+import {Bet} from '../models/bet-model';
+import {Bettservice} from './bettservice.service';
+import {VorBets} from '../vor-bets/vor-bets';
+import {LoginAsUserService} from './login-as-user';
+import {User} from '../models/user-model';
+
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +15,8 @@ import {MatchService} from './match-service';
 export class SocketService {
   private socket: Socket;
   MatchService = inject(MatchService)
+  BetsService = inject(Bettservice);
+  LoginAsUser = inject(LoginAsUserService);
   constructor() {
     this.socket = io('http://localhost:3000');
     this.socket.on('connect', () => {
@@ -27,6 +35,13 @@ export class SocketService {
     this.socket.on('NewMatch', (data:Match[]) => {
       this.MatchService.match.set(data);
       this.MatchService.applyCorrectOrder()
+    })
+    this.socket.on('betsUpdate', (data:Bet[]) => {
+      this.BetsService.bets.set(data);
+    })
+    this.socket.on('BalUpdate', (user:User) => {
+      this.LoginAsUser.user.set(user)
+
     })
 
 
