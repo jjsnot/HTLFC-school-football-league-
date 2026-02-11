@@ -321,6 +321,8 @@ router.patch("/:id", requireAdmin, async (req, res) => {
                         });
                         updatedUsers.push(user);
                     }
+
+                    req.app.locals.io?.to(`user:${bet.userId}`).emit("BalUpdate");
                 }
             }
 

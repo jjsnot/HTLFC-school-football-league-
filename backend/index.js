@@ -32,6 +32,12 @@ const io = new Server(server, {
 app.locals.io = io;
 io.on("connection", (socket) => {
     console.log(`Client connected:${socket.id}`);
+    socket.on("auth", (userId) => {
+        if (!userId) return;
+        socket.join(`user:${userId}`);
+        socket.data.userId = userId;
+        console.log(`Socket ${socket.id} joined user:${userId}`);
+    });
     socket.on("disconnect", () => {
         console.log(`Client disconnected:${socket.id}`);
     })

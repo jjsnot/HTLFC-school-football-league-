@@ -13,7 +13,7 @@ import {User} from '../models/user-model';
   providedIn: 'root',
 })
 export class SocketService {
-  private socket: Socket;
+  public socket: Socket;
   MatchService = inject(MatchService)
   BetsService = inject(Bettservice);
   LoginAsUser = inject(LoginAsUserService);
@@ -39,14 +39,24 @@ export class SocketService {
     this.socket.on('betsUpdate', (data:Bet[]) => {
       this.BetsService.bets.set(data);
     })
-    this.socket.on('BalUpdate', (user:User) => {
-      this.LoginAsUser.user.set(user)
-
+    this.socket.on('BalUpdate', () => {
+      this.LoginAsUser.getUser().subscribe()
     })
+
 
 
   }
 
-
+  initAuthOnce(){
+    this.LoginAsUser.getUser().subscribe(
+      {
+        next: user =>{
+          this.socket.emit("auth" , user.id);
+        },
+        error: err => {
+        }
+      }
+    )
+  }
 
 }

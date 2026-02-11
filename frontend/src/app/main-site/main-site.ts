@@ -22,10 +22,16 @@ import {VorBets} from '../vor-bets/vor-bets';
 })
 export class MainSite {
   view = inject(View)
+  socket = inject(SocketService)
   constructor(private router: Router , private socketService: SocketService) {
     if(localStorage.getItem('token') === null) {
       router.navigateByUrl('login');
     }
   }
+  ngOnInit() {
+    this.socket.initAuthOnce()
+
+  }
+
 
 }

@@ -3,6 +3,7 @@ import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {View} from '../services/view';
 import {LoginAsUserService} from '../services/login-as-user';
 import {User} from '../user/user';
+import {SocketService} from '../services/socket-service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import {User} from '../user/user';
   styleUrl: './header.css',
 })
 export class Header {
+  socket = inject(SocketService)
   email = signal<string | undefined>("")
   balance  = computed(() =>{
     let user = this.loginAsUser.user()
@@ -29,9 +31,7 @@ export class Header {
   loginAsUser = inject(LoginAsUserService)
   constructor(private router: Router) {
   }
-  ngOnInit() {
-    this.loginAsUser.getUser().subscribe()
-  }
+
 
 
   toggleMenu(ev: MouseEvent) {
