@@ -77,7 +77,7 @@ export class MatchService {
      return this.patchMatch(id , {firstTeamScore: first_score, secondTeamScore:second_score,})
 
 }
-finishMatch(id: number){
+finishMatch(id: number) {
     return this.patchMatch(id , {status: "finished",})
 }
 

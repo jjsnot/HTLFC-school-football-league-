@@ -7,9 +7,7 @@ p{
   color: white;
   font-family: "Inter", Arial, sans-serif;
 }
-#f{
 
-}
 .card{
   transition: background-color 250ms ease, color 250ms ease, transform 120ms ease;
   background-color:#2f404f;
@@ -100,4 +98,44 @@ button{
   .buttons-line{
     grid-template-columns: 1fr;
   }
+}
+#vol{
+  color: #869aaf;
+  font-family: "Inter", Arial, sans-serif;
+  margin: 0;          /* главное */
+  padding: 0;
+
+
+}
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.footer p{
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  color: #869aaf;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* чтобы длинное название не ломало */
+.footer-left{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* справа всегда по правому краю */
+.footer-right{
+  flex: 0 0 auto;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }

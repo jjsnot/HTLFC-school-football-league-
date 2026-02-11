@@ -97,6 +97,7 @@ export class Matches implements OnInit {
 
       this.TeamService.editTeam(firstTeam).subscribe()
       this.TeamService.editTeam(secondTeam).subscribe()
+      this.TeamService.getTeams().subscribe()
     }
 
   }

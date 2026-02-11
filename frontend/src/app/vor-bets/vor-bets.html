@@ -18,11 +18,17 @@
           <button id="first-team">{{TeamsService.getTeamById(ma.team1Id)?.name}}</button>
           <button id="draw">DRAW</button>
           <button id="second-team">{{TeamsService.getTeamById(ma.team2Id)?.name}}</button>
+
         </div>
 
 
 
-
+        <div class="footer">
+          <p class="footer-left">HTL CUP</p>
+          <p class="footer-right">
+            {{ (this.BetsService.percentByMatch()[ma.id]?.sum ?? 0) | number:'1.0-0' }} Vol.
+          </p>
+        </div>
       </div>
 
     }

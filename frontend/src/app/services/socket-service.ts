@@ -7,6 +7,8 @@ import {Bettservice} from './bettservice.service';
 import {VorBets} from '../vor-bets/vor-bets';
 import {LoginAsUserService} from './login-as-user';
 import {User} from '../models/user-model';
+import {TeamsService} from './teams';
+import {Team} from '../models/team.model';
 
 
 @Injectable({
@@ -17,6 +19,7 @@ export class SocketService {
   MatchService = inject(MatchService)
   BetsService = inject(Bettservice);
   LoginAsUser = inject(LoginAsUserService);
+  TeamsService = inject(TeamsService)
   constructor() {
     this.socket = io('http://localhost:3000');
     this.socket.on('connect', () => {
@@ -41,6 +44,9 @@ export class SocketService {
     })
     this.socket.on('BalUpdate', () => {
       this.LoginAsUser.getUser().subscribe()
+    })
+    this.socket.on("TeamUpdate" , () => {
+      this.TeamsService.getTeams().subscribe()
     })
 
 

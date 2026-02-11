@@ -13,11 +13,11 @@ export class Bettservice {
   public bets = signal<Bet[]>([]);
   public id_bets = signal<Bet[]>([]);
   public percentByMatch = computed(() => {
-    const res: Record<number, { first:number; second:number; draw:number }> = {};
+    const res: Record<number, { first:number; second:number; draw:number , sum:number }> = {};
 
     for (const b of this.bets()) {
       const id = b.matchId;
-      res[id] ??= { first: 0, second: 0, draw: 0 };
+      res[id] ??= { first: 0, second: 0, draw: 0 , sum: 0 };
 
       if (b.pick === 'team1') {res[id].first+= b.amount;}
       else if (b.pick === 'team2') {res[id].second+= b.amount;}
@@ -33,6 +33,7 @@ export class Bettservice {
         first: res[id].first / sum * 100,
         second: res[id].second / sum * 100,
         draw: res[id].draw / sum * 100,
+        sum: sum,
       };
     }
 

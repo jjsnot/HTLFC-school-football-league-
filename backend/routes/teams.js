@@ -21,6 +21,7 @@ router.post('/',requireAdmin, async (req, res) => {
     if(!Number.isInteger(score) || score < 0) return res.status(400).json({error: "Score must be an integer >=0"});
     try{
         const team = await db.team.create({ data:{name , score}})
+        req.app.locals.io?.emit("TeamUpdate");
         return res.status(201).json(team)
     }catch(err){
         if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
