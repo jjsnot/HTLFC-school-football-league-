@@ -1,0 +1,33 @@
+<div class="card-feld">
+  @for (ma of MatchService.match(); track $index){
+    @if (ma.status  === "scheduled") {
+      <div class="card">
+        <div class="line" id="f">
+          <p >{{TeamsService.getTeamById(ma.team1Id)?.name}} </p>
+          <p>{{this.BetsService.percentByMatch()[ma.id]?.first ?? 0 | number:'1.0-0'}}%</p>
+        </div>
+        <div class="line">
+          <p>{{TeamsService.getTeamById(ma.team2Id)?.name}}</p>
+          <p>{{this.BetsService.percentByMatch()[ma.id]?.second ?? 0 | number:'1.0-0'}}%</p>
+        </div>
+        <div class="line">
+          <p>DRAW </p>
+          <p>{{this.BetsService.percentByMatch()[ma.id]?.draw ?? 0 | number:'1.0-0'}}%</p>
+        </div>
+        <div class="buttons-line">
+          <button id="first-team">{{TeamsService.getTeamById(ma.team1Id)?.name}}</button>
+          <button id="draw">DRAW</button>
+          <button id="second-team">{{TeamsService.getTeamById(ma.team2Id)?.name}}</button>
+        </div>
+
+
+
+
+      </div>
+
+    }
+
+
+  }
+</div>
+

@@ -1,0 +1,96 @@
+/* вставь в styles.css или index.html через @import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+
+
+p{
+  color: white;
+  font-family: "Inter", Arial, sans-serif;
+}
+#f{
+
+}
+.card{
+  transition: background-color 250ms ease, color 250ms ease, transform 120ms ease;
+  background-color:#2f404f;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px 16px;
+;
+}
+.card-feld{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  align-items: center;
+}
+.card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.line{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;      /* одинаковые отступы у каждой строки */
+}
+.line + .line{
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+button{
+  transition: background-color 250ms ease, color 250ms ease, transform 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  padding: 16px 32px;
+  border-radius: 4px;
+
+  border: 1px solid transparent;
+  background: rgba(255,255,255,.06);
+  color: #e8eef4;
+
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+
+}
+.buttons-line{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;      /* одинаковые отступы у каждой строки */
+}
+#draw{
+  padding: 12px 12px;
+}
+#first-team{
+  background-color: #34656c;
+  color: #03ffff;
+}
+#second-team{
+  background-color: #5c414e;
+  color:#ff403f;
+
+}
+#second-team:hover{
+  background-color: #f94040;
+  color: #ffffff;
+
+}
+#first-team:hover{
+  color: #ffffff;
+  background-color: #00c0a0;
+
+
+
+}
+#draw:hover{
+  border-color: rgba(255, 255, 255, 0.28);
+}
