@@ -19,9 +19,9 @@ export class Bettservice {
       const id = b.matchId;
       res[id] ??= { first: 0, second: 0, draw: 0 };
 
-      if (b.pick === 'team1') res[id].first++;
-      else if (b.pick === 'team2') res[id].second++;
-      else res[id].draw++;
+      if (b.pick === 'team1') {res[id].first+= b.amount;}
+      else if (b.pick === 'team2') {res[id].second+= b.amount;}
+      else {res[id].draw+= b.amount}
     }
 
     for (const idStr of Object.keys(res)) {

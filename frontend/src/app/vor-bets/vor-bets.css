@@ -18,7 +18,8 @@ p{
   max-width: 400px;
   margin: 0 auto;
   padding: 10px 16px;
-;
+  overflow: hidden;
+
 }
 .card-feld{
   display: grid;
@@ -47,7 +48,7 @@ button{
   align-items: center;
   justify-content: center;
   gap: 4px;
-
+  min-width: 0;
   padding: 16px 32px;
   border-radius: 4px;
 
@@ -61,11 +62,11 @@ button{
 
 }
 .buttons-line{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* края растягиваются, draw фикс */
   gap: 12px;
-  padding: 4px 0;      /* одинаковые отступы у каждой строки */
+  align-items: stretch;
 }
 #draw{
   padding: 12px 12px;
@@ -93,4 +94,10 @@ button{
 }
 #draw:hover{
   border-color: rgba(255, 255, 255, 0.28);
+}
+
+@media (max-width: 420px){
+  .buttons-line{
+    grid-template-columns: 1fr;
+  }
 }
