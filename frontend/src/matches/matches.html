@@ -1,4 +1,4 @@
-<button (click)="openPopup()" class="add-team-button">Add new Match</button>
+<button (click)="openPopup()" [disabled]="isSaving()" class="add-team-button">{{ isSaving() ? 'Saving...' : 'Add new match' }}</button>
 
 <div class="matches-grid">
   @for (match of matches(); track match.id) {

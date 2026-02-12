@@ -8,7 +8,7 @@ import {PopupService} from '../app/services/popup-service';
 import {NotificationService} from '../app/services/notification';
 import {ToastComponent} from '../toast/toast.component';
 import {View} from '../app/services/view';
-import {pipe, tap} from 'rxjs';
+
 
 @Component({
   selector: 'app-matches',
@@ -22,6 +22,7 @@ export class Matches implements OnInit {
   TeamService = inject(TeamsService)
   MatchService = inject(MatchService);
   matches = this.MatchService.match
+  isSaving = signal(false);
   constructor(private http: HttpClient ,private PopupService: PopupService , private ns: NotificationService) {}
 
   ngOnInit() {
@@ -98,6 +99,10 @@ export class Matches implements OnInit {
       this.TeamService.editTeam(firstTeam).subscribe()
       this.TeamService.editTeam(secondTeam).subscribe()
       this.TeamService.getTeams().subscribe()
+      this.isSaving.set(true)
+      setTimeout(() => {
+        this.isSaving.set(false);
+      }, 3000);
     }
 
   }
