@@ -81,7 +81,7 @@ export async function sendLoginCode(emailRaw) {
             const user = await tx.user.upsert({
                 where: { email },
                 update: {},
-                create: { email, avalible_balance: 0, frozen_balance: 0 },
+                create: { email, avalible_balance: 1000, frozen_balance: 0 },
             });
 
             const codeObj = await tx.code.findUnique({ where: { userId: user.id } });

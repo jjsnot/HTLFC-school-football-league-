@@ -43,7 +43,6 @@ export class Bettservice {
     return res;
   });
 
-
   createBet(matchId: number | undefined, pick: Pick | undefined, amount:number){
     return this.http.post<Bet>(`${environment.apiUrl}/api/bets` , {matchId:matchId, pick:pick, amount:amount})
   }

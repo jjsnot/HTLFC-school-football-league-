@@ -1,5 +1,5 @@
 import {Injectable, signal} from '@angular/core';
-type ViewMode = 'teams' | 'matches';
+type ViewMode = 'teams' | 'matches' |"site";
 type ViewMode_Users = 'home'| 'wetten' | 'baum' | 'top'
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,10 @@ private key_2 = "IsLive"
   toggleView_match(): void {
     this.currentView.set("teams");
     localStorage.setItem(this.key , "teams")
+  }
+  toggleSite(): void {
+    this.currentView.set("site");
+    localStorage.setItem(this.key , "site")
   }
   toggleView_user(direction:string): void {
     this.currentView_Users.set(`${direction as ViewMode_Users}`);

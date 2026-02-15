@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
     const email = req.body.email;
     try{
         const user = await db.user.create({
-            data: {email: email, avalible_balance: 0 , frozen_balance: 0},
+            data: {email: email, avalible_balance: 0, frozen_balance: 0},
         })
         res.json(user)
     }catch(err){

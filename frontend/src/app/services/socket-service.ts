@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {io, Socket} from 'socket.io-client';
 import {Match} from '../models/match.model';
 import {MatchService} from './match-service';
@@ -23,6 +23,7 @@ export class SocketService {
   BetsService = inject(Bettservice);
   LoginAsUser = inject(LoginAsUserService);
   TeamsService = inject(TeamsService)
+  timer = signal<number>(0)
   constructor(private router: Router) {
     this.socket = io(environment.apiUrl);
     this.socket.on('connect', () => {
@@ -38,6 +39,9 @@ export class SocketService {
       this.MatchService.updateMatch(data);
 
     })
+    this.socket.on('timerUpdated', (ms:number) => {
+      this.timer.set(ms)
+    })
     this.socket.on('NewMatch', (data:Match[]) => {
       this.MatchService.match.set(data);
       this.MatchService.applyCorrectOrder()
@@ -46,10 +50,12 @@ export class SocketService {
       this.BetsService.bets.set(data);
       this.LoginAsUser.getUser().subscribe()
       this.BetsService.getByUser().subscribe()
+      this.LoginAsUser.getAllUsers().subscribe();
     })
     this.socket.on('BalUpdate', () => {
       this.LoginAsUser.getUser().subscribe()
       this.BetsService.getByUser().subscribe()
+      this.LoginAsUser.getAllUsers().subscribe();
     })
     this.socket.on("TeamUpdate" , () => {
       this.TeamsService.getTeams().subscribe()

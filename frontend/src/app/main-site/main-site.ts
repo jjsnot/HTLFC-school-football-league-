@@ -9,6 +9,7 @@ import {SocketService} from '../services/socket-service';
 import {Matches} from '../../matches/matches';
 import {VorBets} from '../vor-bets/vor-bets';
 import {Bets} from '../../bets/bets';
+import {LiderBoard} from '../../lider-board/lider-board';
 
 @Component({
   selector: 'app-main-site',
@@ -19,7 +20,8 @@ import {Bets} from '../../bets/bets';
     MatchesForUsers,
     Matches,
     VorBets,
-    Bets
+    Bets,
+    LiderBoard
   ]
 })
 export class MainSite {
