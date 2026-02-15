@@ -18,9 +18,9 @@ export class LoginAsUser {
   code = signal<string>('');
   error = signal<string>('');
   constructor(private logasuser: LoginAsUserService, private router: Router) {
-    if(this.logasuser.getToken() != null) {
-      this.router.navigateByUrl("home")
-    }
+    logasuser.getUser().subscribe(user => {this.router.navigateByUrl('/home');} , err => {
+      console.log(err);
+    })
     if(localStorage.getItem('email')!= null) {
       this.email.set(localStorage.getItem('email')?? "")
       this.isSent.set(true);

@@ -102,6 +102,5 @@ export class CreateNewMatchPopup {
     this.MatchService.getMatches().subscribe()
     this.popupService.closePopup();
     this.ns.info("Create new match popup")
-
   }
 }

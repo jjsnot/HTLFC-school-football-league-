@@ -4,12 +4,12 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, pipe, tap} from 'rxjs';
 import {Match} from '../models/match.model';
 import {MatchPatch} from '../models/match-patch-model';
+import{environment} from '../../environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MatchService {
-  private readonly url ='http://localhost:3000/api/match';
   public match = signal<Match[]>([]);
 
   constructor(private http: HttpClient) {}
@@ -25,7 +25,7 @@ export class MatchService {
   }
 
   getMatches(): Observable<Match[]> {
-    return this.http.get<Match[]>(this.url).pipe(tap(match => {
+    return this.http.get<Match[]>(`${environment.apiUrl}/api/match/`).pipe(tap(match => {
       this.match.set(match)
       this.applyCorrectOrder()
       }));
@@ -53,7 +53,7 @@ export class MatchService {
     );
   }
   patchMatch(id: number, patch: MatchPatch){
-     this.http.patch<Match>(`${this.url}/${id}`, patch).subscribe({
+     this.http.patch<Match>(`${environment.apiUrl}/api/match/${id}`, patch).subscribe({
        next:  match =>{
          {
            this.match.update(arr=>
@@ -82,7 +82,7 @@ finishMatch(id: number) {
 }
 
   createMatch(round: number,team1Id: number, team2Id: number, duration: number){
-    return this.http.post<Match>(`${this.url}` , {round:round, team1Id:team1Id, team2Id:team2Id, duration:duration})
+    return this.http.post<Match>(`${environment.apiUrl}/api/match` , {round:round, team1Id:team1Id, team2Id:team2Id, duration:duration})
 
 }
 

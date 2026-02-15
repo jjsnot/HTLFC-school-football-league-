@@ -5,12 +5,16 @@ import {EditPopup} from '../edit-popup/edit-popup';
 import {Team} from '../models/team.model';
 import {Match} from '../models/match.model';
 import {CreateNewMatchPopup} from '../create-new-match-popup/create-new-match-popup';
+import {Pick} from '../models/bet-model';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class PopupService {
   team: Team | undefined;
+  pick: Pick | undefined;
+  matchId: number | undefined;
   constructor(private dialog: MatDialog) {}
 
 
@@ -47,6 +51,7 @@ export class PopupService {
     });
 
   }
+
   closePopup() {
     this.dialog.closeAll()
   }

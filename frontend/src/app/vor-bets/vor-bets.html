@@ -15,11 +15,19 @@
           <p>{{this.BetsService.percentByMatch()[ma.id]?.draw ?? 0 | number:'1.0-0'}}%</p>
         </div>
         <div class="buttons-line">
-          <button id="first-team">{{TeamsService.getTeamById(ma.team1Id)?.name}}</button>
-          <button id="draw">DRAW</button>
-          <button id="second-team">{{TeamsService.getTeamById(ma.team2Id)?.name}}</button>
-
+          <button [class.active]="isActive(ma.id,'team1')" (click)="setSelected(ma.id,'team1')" id="first-team">{{TeamsService.getTeamById(ma.team1Id)?.name}}</button>
+          <button [class.active]="isActive(ma.id,'draw')"  (click)="setSelected(ma.id,'draw')"  id="draw">DRAW</button>
+          <button [class.active]="isActive(ma.id,'team2')"  (click)="setSelected(ma.id,'team2')"   id="second-team">{{TeamsService.getTeamById(ma.team2Id)?.name}}</button>
         </div>
+        @if(selected()?.matchId === ma.id){
+          <div class="input-grp">
+            <label>Betrag</label>
+            <input [(ngModel)]="amount">
+            <button (click)="createBet()" class="confirm-btn">Bestätigen</button>
+          </div>
+        }
+
+
 
 
 

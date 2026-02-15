@@ -3,27 +3,30 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
 import {Router} from '@angular/router';
 import {AllUsers, User} from '../models/user-model';
+import{environment} from '../../environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginAsUserService {
   public user = signal<User | null>(null)
+
   constructor(private http: HttpClient , private router: Router) {
   }
 
   request(email: string) {
-    return this.http.post("http://localhost:3000/api/admin/request" , {email})
+    return this.http.post(`${environment.apiUrl}/api/admin/request` , {email})
   }
   verifyEmail(email: string , code: string) {
-    return this.http.post<{token: string}>("http://localhost:3000/api/admin/verify", {email , code})
+    return this.http.post<{token: string}>(`${environment.apiUrl}/api/admin/verify`, {email , code})
       .pipe(tap(res => localStorage.setItem("token" , res.token)));
   }
   getUser(): Observable<User>{
-    return this.http.get<User>("http://localhost:3000/api/user/acc").pipe(tap(res => this.user.set(res)));
+    return this.http.get<User>(`${environment.apiUrl}/api/user/acc`).pipe(tap(res => this.user.set(res)));
   }
   getAllUsers(){
-    return this.http.get<AllUsers[]>("http://localhost:3000/api/user");
+    return this.http.get<AllUsers[]>(`${environment.apiUrl}/api/user`);
   }
   logout() {
     localStorage.removeItem("token");

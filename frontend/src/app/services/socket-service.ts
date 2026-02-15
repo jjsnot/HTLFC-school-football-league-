@@ -9,6 +9,9 @@ import {LoginAsUserService} from './login-as-user';
 import {User} from '../models/user-model';
 import {TeamsService} from './teams';
 import {Team} from '../models/team.model';
+import{environment} from '../../environment';
+import {routes} from '../app.routes';
+import {Router} from '@angular/router';
 
 
 @Injectable({
@@ -20,8 +23,8 @@ export class SocketService {
   BetsService = inject(Bettservice);
   LoginAsUser = inject(LoginAsUserService);
   TeamsService = inject(TeamsService)
-  constructor() {
-    this.socket = io('http://localhost:3000');
+  constructor(private router: Router) {
+    this.socket = io(environment.apiUrl);
     this.socket.on('connect', () => {
       console.log(`Socket Connected: ${this.socket.id}`);
     })
@@ -41,6 +44,7 @@ export class SocketService {
     })
     this.socket.on('betsUpdate', (data:Bet[]) => {
       this.BetsService.bets.set(data);
+      this.LoginAsUser.getUser().subscribe()
     })
     this.socket.on('BalUpdate', () => {
       this.LoginAsUser.getUser().subscribe()
@@ -60,6 +64,8 @@ export class SocketService {
           this.socket.emit("auth" , user.id);
         },
         error: err => {
+          this.router.navigate(['/login']);
+          console.log(err);
         }
       }
     )

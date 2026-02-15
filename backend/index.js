@@ -13,7 +13,7 @@ import {Server} from "socket.io";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:4200" }));//change localhost
+app.use(cors({ origin: "*" }));//change localhost
 app.use(express.json());
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
@@ -27,7 +27,7 @@ app.use("/api/email", email)
 
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: { origin: "http://localhost:4200" },
+    cors: { origin: "*" },
 });
 app.locals.io = io;
 io.on("connection", (socket) => {

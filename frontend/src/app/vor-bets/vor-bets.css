@@ -9,7 +9,7 @@ p{
 }
 
 .card{
-  transition: background-color 250ms ease, color 250ms ease, transform 120ms ease;
+  transition: background-color 250ms ease, color 250ms ease, transform 250ms ease;
   background-color:#2f404f;
   border-radius: 10px;
   width: 100%;
@@ -58,6 +58,30 @@ button{
   font-size: 16px;
   line-height: 1;
 
+}
+
+/* Active state (when user selected a pick) */
+button.active{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+}
+
+/* Keep your team colors, just intensify when active */
+#first-team.active{
+  background-color: #00c0a0;
+  color: #ffffff;
+}
+
+#second-team.active{
+  background-color: #f94040;
+  color: #ffffff;
+}
+
+#draw.active{
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255,255,255,.10);
+  color: #e8eef4;
 }
 .buttons-line{
 
@@ -138,4 +162,88 @@ button{
   flex: 0 0 auto;
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+/* Amount input group (opens when a pick is selected) */
+.input-grp{
+  margin-top: 10px;
+  padding: 10px 12px;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label label"
+    "input btn";
+  gap: 10px;
+
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 4px;
+}
+
+/* label */
+.input-grp label{
+  grid-area: label;
+  color: #869aaf;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: .2px;
+}
+
+/* input */
+.input-grp input{
+  grid-area: input;
+  width: 100%;
+  padding: 12px 12px;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.16);
+  color: #e8eef4;
+
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+
+  outline: none;
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 120ms ease;
+}
+
+.input-grp input:hover{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.24);
+}
+
+.input-grp input:focus{
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(66, 66, 66, 0.12);
+  transform: translateY(-1px);
+}
+
+/* confirm button in the group (inherits your global button styles) */
+.input-grp button{
+  grid-area: btn;
+  padding: 12px 14px;
+  white-space: nowrap;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 420px){
+  .input-grp{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "label"
+      "input"
+      "btn";
+  }
+  .input-grp button{
+    width: 100%;
+  }
+}
+.input-grp .confirm-btn{
+  border-color: rgba(255,255,255,.20);
+  background: rgba(255,255,255,.10);
+}
+.input-grp .confirm-btn:hover{
+  background: rgba(255,255,255,.14);
 }
