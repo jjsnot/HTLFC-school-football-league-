@@ -45,9 +45,11 @@ export class SocketService {
     this.socket.on('betsUpdate', (data:Bet[]) => {
       this.BetsService.bets.set(data);
       this.LoginAsUser.getUser().subscribe()
+      this.BetsService.getByUser().subscribe()
     })
     this.socket.on('BalUpdate', () => {
       this.LoginAsUser.getUser().subscribe()
+      this.BetsService.getByUser().subscribe()
     })
     this.socket.on("TeamUpdate" , () => {
       this.TeamsService.getTeams().subscribe()

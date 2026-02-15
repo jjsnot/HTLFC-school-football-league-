@@ -8,6 +8,7 @@ import {MatchesForUsers} from '../../matches-for-users/matches-for-users';
 import {SocketService} from '../services/socket-service';
 import {Matches} from '../../matches/matches';
 import {VorBets} from '../vor-bets/vor-bets';
+import {Bets} from '../../bets/bets';
 
 @Component({
   selector: 'app-main-site',
@@ -17,7 +18,8 @@ import {VorBets} from '../vor-bets/vor-bets';
     Header,
     MatchesForUsers,
     Matches,
-    VorBets
+    VorBets,
+    Bets
   ]
 })
 export class MainSite {

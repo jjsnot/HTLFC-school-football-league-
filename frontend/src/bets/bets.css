@@ -1,0 +1,147 @@
+.bets-wrap{
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px;
+  color: #e8eef4;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.table-wrap{
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,.10);
+  background: #2f404f;
+  border-radius: 4px;
+}
+
+.bets-table{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px; /* чтобы не ломалось на узких */
+}
+
+.bets-table th,
+.bets-table td{
+  padding: 12px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.bets-table thead th{
+  color: #b7c6d6;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: .2px;
+  background: rgba(255,255,255,.04);
+}
+
+.cell-strong{
+  font-weight: 800;
+  white-space: normal;
+}
+
+.pill{
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  font-weight: 800;
+  border-radius: 4px;
+}
+
+.pill.team1{ background:#34656c; color:#03ffff; }
+.pill.team2{ background:#5c414e; color:#ff403f; }
+.pill.draw{  background:rgba(255,255,255,.06); color:#e8eef4; }
+
+.status{
+  display: inline-flex;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  font-weight: 800;
+}
+
+.status.inprogress{
+  color: #b7c6d6;
+  border-radius: 4px;
+}
+
+.result{
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.pnl{
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.pnl.pos{ color: #23f624; }
+.pnl.neg{ color: #ff403f; }
+
+.dash{
+  color:#869aaf;
+}
+
+/* Mobile cards */
+.cards{
+  display: none;
+  gap: 12px;
+}
+
+.bet-card{
+  border: 1px solid rgba(255,255,255,.10);
+  background: #2f404f;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+
+}
+
+.card-top .title{
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  width: 100%;
+}
+
+.card-top .amt{
+  font-weight: 900;
+  color:#b7c6d6;
+  font-variant-numeric: tabular-nums;
+}
+
+.row{
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.row .k{
+  color:#869aaf;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.row .v{
+  text-align: right;
+}
+
+/* Switch to cards on small screens */
+@media (max-width: 760px){
+  .table-wrap{ display:none; }
+  .cards{ display:grid; }
+}

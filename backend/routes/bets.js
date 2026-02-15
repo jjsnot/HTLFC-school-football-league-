@@ -26,6 +26,17 @@ router.get('/by/match/:id', async (req, res) => {
         where: {matchId: id}, orderBy: {id: "asc"},
     }))
 })
+//GET
+router.get('/by/user/',requireLog, async (req, res) => {
+    const userID = toInt(req.user.id);
+    if (!Number.isInteger(userID) || userID <= 0) {
+        return res.status(400).json({ error: "userId is invalid" });
+    }
+
+    res.json(await db.bets.findMany({
+        where: {userId: userID}, orderBy: {id: "desc"}
+    }))
+})
 //POST
 router.post("/",requireLog, async (req, res) => {
     const matchID = toInt(req.body?.matchId);

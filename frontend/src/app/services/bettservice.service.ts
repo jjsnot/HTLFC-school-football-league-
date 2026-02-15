@@ -14,6 +14,7 @@ export class Bettservice {
   constructor(private http: HttpClient) { }
   public bets = signal<Bet[]>([]);
   public id_bets = signal<Bet[]>([]);
+  public users_bets = signal<Bet[]>([]);
   public percentByMatch = computed(() => {
     const res: Record<number, { first:number; second:number; draw:number , sum:number }> = {};
 
@@ -49,6 +50,11 @@ export class Bettservice {
   getById(id:number){
     return this.http.get<Bet[]>(`${environment.apiUrl}/api/bets/by/match/${id}`).pipe(tap(bets => {
       this.id_bets.set(bets);
+    }));
+  }
+  getByUser(){
+    return this.http.get<Bet[]>(`${environment.apiUrl}/api/bets/by/user/`).pipe(tap(bets => {
+      this.users_bets.set(bets);
     }));
   }
   getBets(){

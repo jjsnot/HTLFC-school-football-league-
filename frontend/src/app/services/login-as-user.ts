@@ -11,6 +11,7 @@ import{environment} from '../../environment';
 })
 export class LoginAsUserService {
   public user = signal<User | null>(null)
+  public users = signal<User[] | null>([])
 
   constructor(private http: HttpClient , private router: Router) {
   }
@@ -26,7 +27,8 @@ export class LoginAsUserService {
     return this.http.get<User>(`${environment.apiUrl}/api/user/acc`).pipe(tap(res => this.user.set(res)));
   }
   getAllUsers(){
-    return this.http.get<AllUsers[]>(`${environment.apiUrl}/api/user`);
+    return this.http.get<User[]>(`${environment.apiUrl}/api/user`).pipe(tap(res=>{this.users.set(res)
+    }));
   }
   logout() {
     localStorage.removeItem("token");
