@@ -1,0 +1,187 @@
+/* ===== Rangliste (Leaderboard) ===== */
+
+/* wrapper */
+.lb-wrap{
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 18px 14px;
+
+}
+
+/* header row: left title, right "Dein Platz" */
+.lb-header{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 12px 0;
+}
+
+.lb-title{
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  color: #e8eef4;
+  letter-spacing: .2px;
+}
+
+.lb-me{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: #b7c6d6;
+  white-space: nowrap;
+}
+
+/* ===== Desktop table ===== */
+.lb-table-wrap{
+  background:#2f404f;
+  border: 1px solid rgba(255,255,255,.12);
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.lb-table{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 0;
+  border-radius: 4px;
+}
+
+.lb-table thead th{
+  padding: 14px 14px;
+  font-size: 13px;
+  font-weight: 900;
+  color: #b7c6d6;
+  letter-spacing: .25px;
+  background: rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+.lb-table tbody td{
+  padding: 14px 14px;
+  font-size: 16px;
+  color: #e8eef4;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+/* center Platz + Guthaben */
+.lb-table th:nth-child(1),
+.lb-table td:nth-child(1){
+  text-align: center;
+  width: 120px;
+}
+
+.lb-table th:nth-child(3),
+.lb-table td:nth-child(3){
+  text-align: center;
+  width: 220px;
+}
+
+/* email + total */
+.lb-table td.email{
+  font-size: 18px;
+  font-weight: 900;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-table td.total{
+  font-size: 20px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+/* zebra + hover */
+.lb-table tbody tr:nth-child(odd){
+  background: rgba(255,255,255,.03);
+}
+
+.lb-table tbody tr:hover{
+  background: rgba(255,255,255,.06);
+}
+
+/* highlight me */
+.lb-table tbody tr.me{
+  background: rgba(3,255,255,.10) !important;
+  outline: 1px solid rgba(3,255,255,.26);
+}
+
+/* ===== Mobile cards ===== */
+.lb-card{
+  background:#2f404f;
+  border: 1px solid rgba(255,255,255,.10);
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.lb-card.me{
+  border-radius: 4px;
+  background: rgba(3,255,255,.08);
+  outline: 1px solid rgba(3,255,255,.25);
+}
+
+.lb-card-top{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.lb-card .place{
+  font-weight: 900;
+  color:#b7c6d6;
+  min-width: 52px;
+}
+
+.lb-card .email{
+  font-weight: 900;
+  color: #e8eef4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.lb-card-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 10px;
+}
+
+.lb-card-row .k{
+  color:#b7c6d6;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .2px;
+}
+
+.lb-card-row .v{
+  color:#e8eef4;
+  font-weight: 900;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Responsive switch ===== */
+.desktop-only{ display:block; }
+.mobile-only{ display:none; }
+
+@media (max-width: 760px){
+  .lb-wrap{ padding: 14px 12px; }
+
+
+  .lb-header{
+    align-items: center;
+  }
+
+  .lb-title{ font-size: 22px; }
+  .lb-me{ font-size: 14px; }
+
+  .desktop-only{ display:none; }
+  .mobile-only{ display:block; }
+}

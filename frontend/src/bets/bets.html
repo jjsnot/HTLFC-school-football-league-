@@ -1,0 +1,109 @@
+<div class="bets-wrap">
+
+  <!-- Desktop table -->
+  <div class="table-wrap">
+    <table class="bets-table">
+      <thead>
+      <tr>
+        <th>Spiel</th>
+        <th>Einsatz</th>
+        <th>Tipp</th>
+        <th>Status / Ergebnis</th>
+        <th>Gewinn/Verlust</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        @for (b of mergedBets(); track $index) {
+          <tr>
+            <td class="cell-strong">
+              {{ matchLabel(b.matchId) }}
+            </td>
+
+            <td>
+              {{ b.amount | number:'1.0-0' }}
+            </td>
+
+            <td>
+            <span class="pill" [class.team1]="b.pick==='team1'" [class.draw]="b.pick==='draw'" [class.team2]="b.pick==='team2'">
+              {{ pickLabel(b.matchId, b.pick) }}
+            </span>
+            </td>
+
+            <td>
+              @if (isFinished(b.matchId)) {
+                <span class="result">
+                {{ scoreLabel(b.matchId) }}
+              </span>
+              } @else {
+                <span class="status inprogress">In Bearbeitung</span>
+              }
+            </td>
+
+            <td>
+              @if (isFinished(b.matchId)) {
+                @let v = pnl(b.matchId, b.pick, b.amount);
+
+                <span class="pnl"
+                      [class.pos]="v > 0"
+                      [class.neg]="v < 0">
+      {{ v > 0 ? '+' : '' }}{{ v | number:'1.0-0' }}
+    </span>
+              } @else {
+                <span class="dash">—</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile cards -->
+  <div class="cards">
+    @for (b of mergedBets(); track $index) {
+      <div class="bet-card">
+        <div class="card-top">
+          <div class="title">{{ matchLabel(b.matchId) }}</div>
+        </div>
+
+        <div class="row">
+          <div class="k">Tipp</div>
+          <div class="v">
+            <span class="pill" [class.team1]="b.pick==='team1'" [class.draw]="b.pick==='draw'" [class.team2]="b.pick==='team2'">
+              {{ pickLabel(b.matchId, b.pick) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="k">Status / Ergebnis</div>
+          <div class="v">
+            @if (isFinished(b.matchId)) {
+              <span class="result">{{ scoreLabel(b.matchId) }}</span>
+            } @else {
+              <span class="status inprogress">In Bearbeitung</span>
+            }
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="k">Gewinn/Verlust</div>
+          <div class="v">
+            @if (isFinished(b.matchId)) {
+              @let v = pnl(b.matchId, b.pick, b.amount);
+
+              <span class="pnl" [class.pos]="v > 0" [class.neg]="v < 0">
+        {{ v > 0 ? '+' : '' }}{{ v | number:'1.0-0' }}
+      </span>
+            } @else {
+              <span class="dash">—</span>
+            }
+          </div>
+        </div>
+        </div>
+
+    }
+  </div>
+
+</div>

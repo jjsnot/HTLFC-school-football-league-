@@ -1,0 +1,249 @@
+/* вставь в styles.css или index.html через @import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+
+
+p{
+  color: white;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.card{
+  transition: background-color 250ms ease, color 250ms ease, transform 250ms ease;
+  background-color:#2f404f;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  overflow: hidden;
+
+}
+.card-feld{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  align-items: center;
+}
+.card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.line{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;      /* одинаковые отступы у каждой строки */
+}
+.line + .line{
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+button{
+  transition: background-color 250ms ease, color 250ms ease, transform 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 32px;
+  border-radius: 4px;
+
+  border: 1px solid transparent;
+  background: rgba(255,255,255,.06);
+  color: #e8eef4;
+
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+
+}
+
+/* Active state (when user selected a pick) */
+button.active{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+}
+
+/* Keep your team colors, just intensify when active */
+#first-team.active{
+  background-color: #00c0a0;
+  color: #ffffff;
+}
+
+#second-team.active{
+  background-color: #f94040;
+  color: #ffffff;
+}
+
+#draw.active{
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255,255,255,.10);
+  color: #e8eef4;
+}
+.buttons-line{
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* края растягиваются, draw фикс */
+  gap: 12px;
+  align-items: stretch;
+}
+#draw{
+  padding: 12px 12px;
+}
+#first-team{
+  background-color: #34656c;
+  color: #03ffff;
+}
+#second-team{
+  background-color: #5c414e;
+  color:#ff403f;
+
+}
+#second-team:hover{
+  background-color: #f94040;
+  color: #ffffff;
+
+}
+#first-team:hover{
+  color: #ffffff;
+  background-color: #00c0a0;
+
+
+
+}
+#draw:hover{
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+@media (max-width: 420px){
+  .buttons-line{
+    grid-template-columns: 1fr;
+  }
+}
+#vol{
+  color: #869aaf;
+  font-family: "Inter", Arial, sans-serif;
+  margin: 0;          /* главное */
+  padding: 0;
+
+
+}
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.footer p{
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  color: #869aaf;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* чтобы длинное название не ломало */
+.footer-left{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* справа всегда по правому краю */
+.footer-right{
+  flex: 0 0 auto;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* Amount input group (opens when a pick is selected) */
+.input-grp{
+  margin-top: 10px;
+  padding: 10px 12px;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label label"
+    "input btn";
+  gap: 10px;
+
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 4px;
+}
+
+/* label */
+.input-grp label{
+  grid-area: label;
+  color: #869aaf;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: .2px;
+}
+
+/* input */
+.input-grp input{
+  grid-area: input;
+  width: 100%;
+  padding: 12px 12px;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.16);
+  color: #e8eef4;
+
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+
+  outline: none;
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 120ms ease;
+}
+
+.input-grp input:hover{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.24);
+}
+
+.input-grp input:focus{
+  background: rgba(255,255,255,.09);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(66, 66, 66, 0.12);
+  transform: translateY(-1px);
+}
+
+/* confirm button in the group (inherits your global button styles) */
+.input-grp button{
+  grid-area: btn;
+  padding: 12px 14px;
+  white-space: nowrap;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 420px){
+  .input-grp{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "label"
+      "input"
+      "btn";
+  }
+  .input-grp button{
+    width: 100%;
+  }
+}
+.input-grp .confirm-btn{
+  border-color: rgba(255,255,255,.20);
+  background: rgba(255,255,255,.10);
+}
+.input-grp .confirm-btn:hover{
+  background: rgba(255,255,255,.14);
+}

@@ -1,0 +1,29 @@
+<aside class="sidebar">
+  <div class="sidebar__top">
+    <div class="sidebar__brand">
+      <div class="sidebar__logo">A</div>
+      <div class="sidebar__title">Admin</div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <button class="sidebar__btn" (click)="view.toggleView_match()">
+        Teams
+      </button>
+
+      <button class="sidebar__btn" (click)="view.toggleView_teams()">
+        Matches
+      </button>
+      <button class="sidebar__btn" (click)="view.toggleSite()">
+        Site
+      </button>
+    </nav>
+  </div>
+
+
+
+  <div class="sidebar__bottom">
+    <button class="sidebar__btn sidebar__btn--logout" (click)="auth.logout()">
+      Logout
+    </button>
+  </div>
+</aside>

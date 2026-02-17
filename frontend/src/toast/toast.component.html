@@ -1,0 +1,9 @@
+
+@if (ns.toast()) {
+  <div class="toast-comp"
+       [class.toast--success]="ns.toast()?.type === 'success'"
+       [class.toast--error]="ns.toast()?.type === 'error'"
+       [class.toast--info]="ns.toast()?.type === 'info'">
+    <span class="toast__text">{{ ns.toast()?.text }}</span>
+  </div>
+}

@@ -1,0 +1,92 @@
+
+.dialog-title {
+  margin:  0 0 10px 0 !important;
+  padding: 10px!important;
+  font-size: 24px;
+  text-align: center !important;
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  sans-serif !important;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px ! important;
+  padding: 10px 25px 10px 25px ! important;
+
+}
+.dialog-label {
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  sans-serif !important;
+
+
+}
+
+.dialog-input {
+
+  padding:  8px;
+  border:  1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dialog-actions , .plus_minus_btn  {
+  display: flex;
+  flex-direction: row;
+  gap: 8px ! important;
+  margin-top: 2px ! important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.dialog-btn  {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #22c55e;
+  color: white;
+  width: 120px;
+
+}
+.plus_button , .minus_button{
+  padding: 10px 15px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #22c55e;
+  color: white;
+  width: 80px;
+
+}
+
+
+.dialog-btn:hover , .plus_button:hover , .minus_button:hover {
+  background-color: #16a34a;
+}
+#del-button{
+  background-color: red;
+}
+#del-button:hover{
+  background-color: #bf2b2b;
+}
+.error{
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.team_name{
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}

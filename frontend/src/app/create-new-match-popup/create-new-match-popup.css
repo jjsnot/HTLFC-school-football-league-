@@ -1,0 +1,150 @@
+
+.dialog-title {
+  margin:  0 0 10px 0 !important;
+  padding: 10px!important;
+  font-size: 24px;
+  text-align: center !important;
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  sans-serif !important;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: row;
+  margin: 0 10px ! important;
+  padding: 0 25px 0 25px ! important;
+
+}
+.dialog-label {
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Roboto,
+  sans-serif !important;
+
+
+}
+
+.dialog-input {
+
+  padding:  8px;
+  border:  1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px ! important;
+  margin-top: 2px ! important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.dialog-btn {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #22c55e;
+  color: white;
+  width: 120px;
+}
+
+.dialog-btn:hover {
+  background-color: #16a34a;
+}
+#del-button{
+  background-color: red;
+}
+#del-button:hover{
+  background-color: #bf2b2b;
+}
+.error{
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.select {
+  width: 100%;
+  height: 44px;
+
+  padding: 0 44px 0 14px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+
+  background-color: #ffffff;
+  color: #0f172a;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 14px;
+  font-weight: 600;
+
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.06);
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+}
+
+/* Стрелка */
+.select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #64748b 50%),
+    linear-gradient(135deg, #64748b 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 18px,
+    calc(100% - 16px) 18px;
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* Hover */
+.select:hover {
+  border-color: rgba(34, 197, 94, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Focus */
+.select:focus {
+  outline: none;
+  border-color: #22c55e;
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, 0.18),
+    0 10px 18px rgba(15, 23, 42, 0.08);
+}
+
+/* Disabled */
+.select:disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Option */
+.select option {
+  font-weight: 500;
+  padding: 8px;
+}
+.dr{
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px 0 50px;
+}

@@ -1,0 +1,19 @@
+<div class="main">
+  <h1 class="dialog-title">Edit team</h1>
+  <div  class="dialog-content">
+    <p class="team_name">{{this.popupService.team?.name}}</p>
+    <label class="dialog-label">Score: </label>
+    <input [(ngModel)]="teamScore" type="number" class="dialog-input">
+    <div class="plus_minus_btn">
+      <button (click)="plus()" class="plus_button">+</button>
+      <button (click)="minus()" class="minus_button">-</button></div>
+
+  </div>
+  <div class="dialog-actions">
+    <button (click)="editTeam()" class="dialog-btn" >Confirm</button>
+    <button  (click)="closeDialog()" class="dialog-btn" id="del-button">Close</button> <br>
+
+  </div>
+
+</div>
+<p class="error">{{errorMessage()}}</p>

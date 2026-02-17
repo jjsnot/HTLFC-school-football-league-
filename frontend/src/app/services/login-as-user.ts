@@ -1,0 +1,44 @@
+import {Injectable, signal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, tap} from 'rxjs';
+import {Router} from '@angular/router';
+import {AllUsers, User} from '../models/user-model';
+import{environment} from '../../environment';
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LoginAsUserService {
+  public user = signal<User | null>(null)
+  public users = signal<User[] | null>([])
+
+  constructor(private http: HttpClient , private router: Router) {
+  }
+
+  request(email: string) {
+    return this.http.post(`${environment.apiUrl}/api/admin/request` , {email})
+  }
+  verifyEmail(email: string , code: string) {
+    return this.http.post<{token: string}>(`${environment.apiUrl}/api/admin/verify`, {email , code})
+      .pipe(tap(res => localStorage.setItem("token" , res.token)));
+  }
+  getUser(): Observable<User>{
+    return this.http.get<User>(`${environment.apiUrl}/api/user/acc`).pipe(tap(res => this.user.set(res)));
+  }
+  getAllUsers(){
+    return this.http.get<User[]>(`${environment.apiUrl}/api/user`).pipe(tap(res=>{this.users.set(res)
+    }));
+  }
+  logout() {
+    localStorage.removeItem("token");
+    this.router.navigateByUrl('login');
+  }
+  getToken(): string | null{
+    return localStorage.getItem("token");
+
+}
+
+
+
+}

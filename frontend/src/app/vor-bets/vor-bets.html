@@ -1,0 +1,47 @@
+<div class="card-feld">
+  @for (ma of MatchService.match(); track $index){
+    @if (ma.status  === "scheduled") {
+      <div class="card">
+        <div class="line" id="f">
+          <p >{{TeamsService.getTeamById(ma.team1Id)?.name}} </p>
+          <p>{{this.BetsService.percentByMatch()[ma.id]?.first ?? 0 | number:'1.0-0'}}%</p>
+        </div>
+        <div class="line">
+          <p>{{TeamsService.getTeamById(ma.team2Id)?.name}}</p>
+          <p>{{this.BetsService.percentByMatch()[ma.id]?.second ?? 0 | number:'1.0-0'}}%</p>
+        </div>
+        <div class="line">
+          <p>DRAW </p>
+          <p>{{this.BetsService.percentByMatch()[ma.id]?.draw ?? 0 | number:'1.0-0'}}%</p>
+        </div>
+        <div class="buttons-line">
+          <button [class.active]="isActive(ma.id,'team1')" (click)="setSelected(ma.id,'team1')" id="first-team">{{TeamsService.getTeamById(ma.team1Id)?.name}}</button>
+          <button [class.active]="isActive(ma.id,'draw')"  (click)="setSelected(ma.id,'draw')"  id="draw">DRAW</button>
+          <button [class.active]="isActive(ma.id,'team2')"  (click)="setSelected(ma.id,'team2')"   id="second-team">{{TeamsService.getTeamById(ma.team2Id)?.name}}</button>
+        </div>
+        @if(selected()?.matchId === ma.id){
+          <div class="input-grp">
+            <label>Betrag</label>
+            <input [(ngModel)]="amount">
+            <button (click)="createBet()" class="confirm-btn">Bestätigen</button>
+          </div>
+        }
+
+
+
+
+
+        <div class="footer">
+          <p class="footer-left">HTL CUP</p>
+          <p class="footer-right">
+            {{ (this.BetsService.percentByMatch()[ma.id]?.sum ?? 0) | number:'1.0-0' }} Vol.
+          </p>
+        </div>
+      </div>
+
+    }
+
+
+  }
+</div>
+

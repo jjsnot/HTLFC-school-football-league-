@@ -1,0 +1,91 @@
+import {Injectable, signal} from '@angular/core';
+import {Team} from '../models/team.model';
+import {HttpClient} from '@angular/common/http';
+import {Observable, pipe, tap} from 'rxjs';
+import {Match} from '../models/match.model';
+import {MatchPatch} from '../models/match-patch-model';
+import{environment} from '../../environment';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MatchService {
+  public match = signal<Match[]>([]);
+
+  constructor(private http: HttpClient) {}
+
+  updateMatch(incoming: Match) {
+    this.match.update(list => {
+      const idx = list.findIndex(m => m.id === incoming.id);
+      if (idx === -1) return [incoming, ...list];
+      const copy = [...list];
+      copy[idx] = { ...copy[idx], ...incoming };
+      return copy;
+    });
+  }
+
+  getMatches(): Observable<Match[]> {
+    return this.http.get<Match[]>(`${environment.apiUrl}/api/match/`).pipe(tap(match => {
+      this.match.set(match)
+      this.applyCorrectOrder()
+      }));
+
+  }
+  getLastRound(){
+    let max = 0;
+    for(let match of this.match()){
+      if(match.round>max){
+        max = match.round;
+      }
+    }
+    return max;
+  }
+
+  applyCorrectOrder(){
+    const priority: Record<string, number> = {
+      live: 0,
+      scheduled: 1,
+      finished: 2,
+    };
+
+    this.match.update(arr =>
+      [...arr].sort((a, b) => (priority[a.status] ?? 99) - (priority[b.status] ?? 99))
+    );
+  }
+  patchMatch(id: number, patch: MatchPatch){
+     this.http.patch<Match>(`${environment.apiUrl}/api/match/${id}`, patch).subscribe({
+       next:  match =>{
+         {
+           this.match.update(arr=>
+             arr.map(m => (m.id === match.id ? match : m ))
+           )
+           this.applyCorrectOrder()
+           console.log(match)
+         }
+       },
+       error: error => {
+         console.log(error);
+       }
+     })
+  }
+  startMatch(id: number){
+     return this.patchMatch(id , {status: "live",
+      firstTeamScore: 0, secondTeamScore:0})
+
+  }
+  setScore(id: number, first_score: number | null , second_score: number | null){
+     return this.patchMatch(id , {firstTeamScore: first_score, secondTeamScore:second_score,})
+
+}
+finishMatch(id: number) {
+    return this.patchMatch(id , {status: "finished",})
+}
+
+  createMatch(round: number,team1Id: number, team2Id: number, duration: number){
+    return this.http.post<Match>(`${environment.apiUrl}/api/match` , {round:round, team1Id:team1Id, team2Id:team2Id, duration:duration})
+
+}
+
+
+
+}

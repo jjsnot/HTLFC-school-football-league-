@@ -1,0 +1,17 @@
+<button class="add-team-button" (click)="openPopup()">Add new Team</button>
+
+<div class="teams-grid">
+  @for (team of teams(); track team.id) {
+    <div class="team-card">
+      <div class="team-info">
+        <p class="team-name">{{ team.name }}</p>
+        <p class="team-score">{{ team.score }}</p>
+      </div>
+
+      <div class="team-actions">
+        <button (click)="editTeam(team)" class="btn btn-primary">Edit</button>
+        <button (click)="deleteTeam(team)" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  }
+</div>

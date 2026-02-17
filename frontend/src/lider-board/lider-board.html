@@ -1,0 +1,49 @@
+<div class="lb-wrap">
+  <div class="lb-header">
+    <div class="lb-title">Rangliste</div>
+
+    @if (myRank() !== null) {
+      <div class="lb-me">Dein Platz: <b>#{{ myRank() }}</b></div>
+    }
+  </div>
+
+  <!-- DESKTOP/TABLET: таблица -->
+  <div class="lb-table-wrap desktop-only">
+    <table class="lb-table">
+      <thead>
+      <tr>
+        <th>Platz</th>
+        <th>Benutzer</th>
+        <th>Gesamtguthaben</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        @for (u of usersSorted(); track u.id) {
+          <tr [id]="'user-' + u.id" [class.me]="u.id === meId()">
+            <td>#{{ $index + 1 }}</td>
+            <td class="email">{{ u.email }}</td>
+            <td class="total">{{ total(u) | number:'1.0-0' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MOBILE: карточки -->
+  <div class="mobile-only">
+    @for (u of usersSorted(); track u.id) {
+      <div class="lb-card" [id]="'user-' + u.id" [class.me]="u.id === meId()">
+        <div class="lb-card-top">
+          <div class="place">#{{ $index + 1 }}</div>
+          <div class="email">{{ u.email }}</div>
+        </div>
+
+        <div class="lb-card-row">
+          <div class="k">Gesamtguthaben</div>
+          <div class="v">{{ total(u) | number:'1.0-0' }}</div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,21 @@
+
+<div class="app-layout">
+  <app-sidebar></app-sidebar>
+  <div class="app-content">
+    @if (view.currentView() === 'teams') {
+      <app-teams></app-teams>
+    }
+    @if (view.currentView() === 'matches') {
+      <app-matches></app-matches>
+    }
+    @if (view.currentView() === 'site') {
+    <app-site-contol></app-site-contol>
+    }
+
+
+
+  </div>
+
+</div>
+
+

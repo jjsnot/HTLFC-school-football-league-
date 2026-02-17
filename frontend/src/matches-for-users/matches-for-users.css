@@ -1,0 +1,219 @@
+/* ===== Live Match Container ===== */
+.live-match-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 24px auto;
+  padding: 0 18px;
+}
+
+.live-match-card {
+  background: #2f404f;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+}
+
+/* Wartennachricht */
+.match-waiting {
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  padding: 12px 0;
+  letter-spacing: 0.2px;
+}
+
+/* Team-Namen */
+.team-names {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  color: #fff;
+  margin: 0 0 20px 0;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+/* Separator zwischen Teams */
+.team-separator {
+  display: inline-block;
+  margin: 0 12px;
+  opacity: 0.6;
+  font-weight: 800;
+}
+
+/* Score Anzeige */
+.score-display {
+  font-size: 56px;
+  font-weight: 900;
+  color: #fff;
+  margin: 24px 0;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  line-height: 1;
+}
+
+/* Separator zwischen Scores */
+.score-separator {
+  display: inline-block;
+  margin: 0 16px;
+  opacity: 0.7;
+  font-weight: 800;
+}
+
+/* Timer Container */
+.match-timer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 28px;
+  margin-top: 16px;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading State */
+.loading-text {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  margin-top: 12px;
+  letter-spacing: 0.2px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Live Indicator Badge (optional) */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  margin-bottom: 16px;
+
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.live-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #fff;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 760px) {
+  .live-match-card {
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+
+  .team-names {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .team-separator {
+    margin: 0 8px;
+  }
+
+  .score-display {
+    font-size: 42px;
+    letter-spacing: 2px;
+    margin: 18px 0;
+  }
+
+  .score-separator {
+    margin: 0 12px;
+  }
+
+  .match-timer {
+    font-size: 22px;
+    padding: 12px 22px;
+    border-radius: 12px;
+  }
+
+  .match-waiting {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .live-match-container {
+    padding: 0 12px;
+    margin: 18px auto;
+  }
+
+  .live-match-card {
+    padding: 20px 14px;
+  }
+
+  .team-names {
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+
+  .score-display {
+    font-size: 36px;
+    margin: 14px 0;
+  }
+
+  .match-timer {
+    font-size: 20px;
+    padding: 10px 18px;
+  }
+}
+
+/* Hover effect für Desktop */
+@media (min-width: 761px) {
+  .live-match-card {
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+  }
+
+  .live-match-card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+}
+
+
