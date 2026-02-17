@@ -3,7 +3,7 @@
 Scoro is a full-stack web app built for a school football tournament.  
 I designed and implemented the product end-to-end: **real-time live scores**, **friendly no-money betting**, and an **admin workflow** for match & team management.
 
-**Impact (1-day event):**
+## Impact (1-day event)
 - **132 users**
 - **20 matches tracked**
 - **671 bets placed**
@@ -36,7 +36,7 @@ I designed and implemented the product end-to-end: **real-time live scores**, **
 
 ---
 
-##  Key Features
+## ✨ Key Features
 - **Live score updates** via **Socket.IO** (real-time UI updates without page refresh)
 - **Authentication** with email verification code (OTP)
 - **Admin panel** for managing teams, matches, and match states
@@ -44,10 +44,10 @@ I designed and implemented the product end-to-end: **real-time live scores**, **
 
 ---
 
-## Tech Stack
+## 🧱 Tech Stack
 
 ### Frontend
-- **Angular** + Angular Material + Bootstrap
+- **Angular** + Angular Material + Bootstrap  
 - **socket.io-client** for realtime updates
 
 ### Backend
@@ -62,7 +62,8 @@ I designed and implemented the product end-to-end: **real-time live scores**, **
 
 ---
 
-## Project Structure
+## 🗂️ Project Structure
+
 ```text
 .
 ├── backend/                  # Express + Prisma + Socket.IO server
@@ -72,16 +73,22 @@ I designed and implemented the product end-to-end: **real-time live scores**, **
 │   ├── index.js              # API entry + Socket.IO
 │   └── db.js                 # Prisma client + SQLite adapter
 └── frontend/                 # Angular app
+```
 
 ---
 
 ## ✅ Getting Started (Local Development)
 
 ### 1) Clone
+
 ```bash
 git clone https://github.com/jjsnot/HTLFC-school-football-league-.git
 cd HTLFC-school-football-league-
+```
 
+### 2) Backend setup
+
+```bash
 cd backend
 npm install
 
@@ -91,12 +98,23 @@ npx prisma migrate dev
 npm run start
 # or:
 node index.js
+```
 
-Frontend setup
+### 3) Frontend setup
+
+```bash
 cd ../frontend
 npm install
 npm start
+```
 
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file (typically in `backend/`) and set:
+
+```env
 # Database (SQLite)
 DATABASE_URL="file:./dev.db"
 
@@ -106,8 +124,11 @@ JWT_EXPIRES_IN="24h"
 
 # Email OTP / verification
 OTP_SECRET="change_me_too"
-email_TOKEN="YOUR_EMAIL_PROVIDER_TOKEN"
+EMAIL_TOKEN="YOUR_EMAIL_PROVIDER_TOKEN"
 
 # Admin credentials (if used by admin routes)
-username="admin"
-password="strong_password_here"
+USERNAME="admin"
+PASSWORD="strong_password_here"
+```
+
+> Note: If your code expects different variable names (e.g., `email_TOKEN`), keep the exact casing/key used in the backend.
