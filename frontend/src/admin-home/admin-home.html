@@ -4,9 +4,14 @@
   <div class="app-content">
     @if (view.currentView() === 'teams') {
       <app-teams></app-teams>
-    } @else {
+    }
+    @if (view.currentView() === 'matches') {
       <app-matches></app-matches>
     }
+    @if (view.currentView() === 'site') {
+    <app-site-contol></app-site-contol>
+    }
+
 
 
   </div>

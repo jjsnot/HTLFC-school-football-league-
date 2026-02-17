@@ -5,6 +5,7 @@ import {interval, single, Subscription, switchMap} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Match} from '../app/models/match.model';
 import {DatePipe} from '@angular/common';
+import {SocketService} from '../app/services/socket-service';
 
 @Component({
   selector: 'app-matches-for-users',
@@ -19,6 +20,7 @@ export class MatchesForUsers {
   TeamsService = inject(TeamsService);
   private destroyRef = inject(DestroyRef);
   remaining = signal(0)
+  Socket = inject(SocketService)
 
   constructor() {
     interval(1000).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(()=>{
@@ -31,6 +33,7 @@ export class MatchesForUsers {
         const end = new Date(live.endTime as any).getTime();
         this.remaining.set(Math.max(0, end - Date.now()));
       }
+      this.Socket.timer.set(this.Socket.timer()-1)
     })
 
 
@@ -48,6 +51,7 @@ export class MatchesForUsers {
   ngOnInit() {
     this.TeamsService.getTeams().subscribe(teams => {console.log(teams);});
     this.MatchService.getMatches().subscribe();
+
 
 
   }

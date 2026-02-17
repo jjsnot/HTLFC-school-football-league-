@@ -23,7 +23,7 @@ export class SocketService {
   BetsService = inject(Bettservice);
   LoginAsUser = inject(LoginAsUserService);
   TeamsService = inject(TeamsService)
-  timer = signal<number>(0)
+  timer = signal<number>(11110)
   constructor(private router: Router) {
     this.socket = io(environment.apiUrl);
     this.socket.on('connect', () => {

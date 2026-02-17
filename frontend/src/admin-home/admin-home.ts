@@ -10,12 +10,14 @@ import {View} from '../app/services/view';
 import {Matches} from '../matches/matches';
 import {ToastComponent} from '../toast/toast.component';
 import {NotificationService} from '../app/services/notification';
+import {VorBets} from '../app/vor-bets/vor-bets';
+import {SiteContol} from '../app/site-contol/site-contol';
 
 
 @Component({
   selector: 'app-admin-home',
   standalone: true,
-  imports: [Sidebar, Teams, Matches, ToastComponent,],
+  imports: [Sidebar, Teams, Matches, ToastComponent, VorBets, SiteContol,],
   templateUrl: './admin-home.html',
   styleUrls: ['./admin-home.css'],
 })
