@@ -130,5 +130,3 @@ EMAIL_TOKEN="YOUR_EMAIL_PROVIDER_TOKEN"
 USERNAME="admin"
 PASSWORD="strong_password_here"
 ```
-
-> Note: If your code expects different variable names (e.g., `email_TOKEN`), keep the exact casing/key used in the backend.
